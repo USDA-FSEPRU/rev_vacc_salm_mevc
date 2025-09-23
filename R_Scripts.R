@@ -31,7 +31,7 @@ Localizations_to_Keep <- c("Extracellular", "Outer Membrane", "Periplasmic")
 #The rest of the filters (transmembrance helices <=1, adhesion probability >=0.51, and Vaxign ML score >=90 are defaults from Vaxign2's Precomputed Query server and documentation)
 Filtered_UK1_Vaxign2 <- filter(Full_UK1_Vaxign2, Trans.membrane.Helices <= 1 & Adhesin.Probability >= 0.51 & Vaxign.ML.Score >= 90 & Localization %in% Localizations_to_Keep)
 
-#Copy table to Excel to track changes
+#Copy table to Excel to track changes - Supplementary Table 2
 clipr::write_clip(Filtered_UK1_Vaxign2)
 
 ##Number of Proteins post-Vaxign2 filtering = 190###
@@ -119,7 +119,7 @@ UK1_ReAnno_gene_name_summary[is.na(UK1_ReAnno_gene_name_summary)] = " -"
 Filtered_UK1_Vaxign2_ReAnno <- merge(Filtered_UK1_Vaxign2, UK1_ReAnno_gene_name_summary)
 
 #Copy down to Excel for manipulation
-clipr::write_clip(Filtered_UK1_Vaxign2_ReAnno)
+clipr::write_clip(Filtered_UK1_Vaxign2_ReAnno) - Supplementary Table 2
 
 #Visually check and edit the resulting table
 #Keep in mind that R code assumes no there are no digits [0-9] in the protein name as well as at least one capital letter
@@ -131,7 +131,7 @@ clipr::write_clip(Filtered_UK1_Vaxign2_ReAnno)
 #See ya after you are done with Protein Blasting!
 #...
 
-#Importing information from Excel/Notepad++...
+#Importing information from Excel/Notepad++... - Supplementary Table 2
 ###Non-flagellar, -LPS, and -plasmid UK1 Proteins = 167###
 ###Antigenic Proteins = 127###
 
@@ -349,6 +349,7 @@ full_protein_homology$Positive.Homology <- with(full_protein_homology, ifelse(En
 #Copy results and add stepwise to Excel Sheet (i.e. do negative homology, then positive homology)
 #Then see Reverse_Vaccinology_UK1_Scripts.txt for information regarding metadata columns to add
 clipr::write_clip(full_protein_homology)
+#Supplementary Table 2
 
 #...
 
@@ -383,6 +384,11 @@ Genbank_RefSeq <- merge(Genbank, RefSeq, by="Protein.Sequence")
 #Separate resulting columns into Accession and Description 
 Genbank_RefSeq <- separate(data = Genbank_RefSeq, col = GenBank.Description, into = c("GenBank.Accession", "GenBank.Protein.Description"), sep = " ", extra = "merge")
 Genbank_RefSeq <- separate(data = Genbank_RefSeq, col = RefSeq.Description, into = c("RefSeq.Accession", "RefSeq.Protein.Description"), sep = " ", extra = "merge")
+
+#Add Annotations to Full UK1 Vaxign2 table
+GenBank_RefSeq_Full_UK1_Vaxign2 <- 
+  merge(select(Genbank_RefSeq, GenBank.Accession, RefSeq.Accession, RefSeq.Protein.Description), Full_UK1_Vaxign2, all.y = TRUE)
+
 
 ##Create a dataframe with GO terms from RefSeq
 
@@ -452,9 +458,9 @@ Post_Annotation_Column_Order <- append(Post_Annotation_Column_Order, Annotation_
 Post_Filtering_UK1_Proteins_Annotated <- Post_Filtering_UK1_Proteins_Annotated[, Post_Annotation_Column_Order] # leave the row index blank to keep all rows
 
 #Copy down into Excel
-clipr::write_clip(Post_Filtering_UK1_Proteins_Annotated)
+clipr::write_clip(Post_Filtering_UK1_Proteins_Annotated) - Supplementary Table 2
 
-####PHASE II EPITOPE FILTERING####
+####PHASE II EPITOPE DISCOVERY####
 
 #Change working directory
 setwd("C:/Users/David.Bradshaw/OneDrive - USDA/Documents/Projects_Reverse_Vaccinology/UK1/cleaned_up/Phase_II_Epitope_Discovery")
@@ -654,7 +660,7 @@ test_positive_epitope_homology <- merge(test_positive_epitope_homology, Infantis
 test_positive_epitope_homology <- merge(test_positive_epitope_homology, Typhimurium_proteomes_epitope_homology_summary)
 test_positive_epitope_homology <- merge(test_positive_epitope_homology, Enteritidis_proteomes_epitope_homology_summary)
 
-#Explore the distribution of TRUE and FALSE epitopes
+#Explore the distribution of TRUE and FALSE epitopes - Table 1; Supplementary Table 4
 
 #100%
 test_positive_epitope_homology$Positive_Epitope_Homology_100 <- with(test_positive_epitope_homology, ifelse(Epitope_vs_Kentucky_proteomes_100_percent_Homology == "FALSE" | 
@@ -795,7 +801,7 @@ length(unique(Post_Positive_Homology_UK1_MHCII_Results$Identity)) #57
 length(unique(Post_Filtering_UK1_MHCII_Results$Identity)) #41
 
 
-#Transfer information of four above dataframes back down into Excel
+#Transfer information of four above dataframes back down into Excel - Supplementary Table 5
 clipr::write_clip(Post_Positive_Homology_UK1_MHCI_Results)
 clipr::write_clip(Post_Positive_Homology_UK1_MHCII_Results)
 
@@ -867,6 +873,7 @@ Post_Filtering_UK1_MHCI_Full <- merge(Post_Filtering_UK1_MHCI_BepiPred, select(P
 
 #Save in Excel
 clipr::write_clip(Post_Filtering_UK1_MHCI_Full)
+#Supplementary Table 3
 
 ##MCHII Epitopes
 #Merge the results with the post filtering dataframe since you are gonna need info from that (Will merge by Identity aka GenBank Accession)
@@ -1011,7 +1018,7 @@ Post_Filtering_UK1_Unique_Peptide_Summary <- rbind(Post_Filtering_UK1_MHCI_Uniqu
 Post_Filtering_UK1_Unique_Peptide_Summary <- merge(Post_Filtering_UK1_Unique_Peptide_Summary, Post_Filtering_UK1_Proteins_Annotated_Epitope_Ver)
 
 #Copy this down to Phase II Excel
-clipr::write_clip(Post_Filtering_UK1_Unique_Peptide_Summary)
+clipr::write_clip(Post_Filtering_UK1_Unique_Peptide_Summary) - Supplementary Table 5
 
 #See Reverse_Vaccinology_UK1_Scripts.txt for next steps for finding Nonoverlapping Epitopes
 
@@ -1106,7 +1113,7 @@ Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Identity_Summary_Both_MHC_Types
 #20 Proteins with both MHCI and MHCII epitopes
 
 #Copy down the Protein information to Excel
-clipr::write_clip(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Identity_Summary)
+clipr::write_clip(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Identity_Summary) - Supplementary Table 5
 
 ####PHASE III CONSTRUCT CREATION####
 
@@ -1151,10 +1158,35 @@ remove(temp_MHCI_region, temp_MHCII_region, temp_LBL_region)
 #Determine number of characters
 nchar(Mugunthan_VaxiJen_Localization_Agnostic_Epitope_Region)#441
 
+#Create a column designating Epitope Type
+VaxiJen_Localization_Agnostic_epitope_type <- foreach(row=1:nrow(VaxiJen_Localization_Agnostic), .combine = rbind, .packages=c('tidyverse')) %do% {                                         #For each row in the metadata file...
+  Unique_Id <- VaxiJen_Localization_Agnostic[row, "Unique_Id"]
+  MHC_Type <- VaxiJen_Localization_Agnostic[row, "MHC_Type"]
+  LBL_Epitope <- VaxiJen_Localization_Agnostic[row, "LBL_Epitope"]
+  if (MHC_Type=="MHCI" & LBL_Epitope=="FALSE"){
+    Epitope_Type = "CTL"
+  }
+  else if (MHC_Type=="MHCII" & LBL_Epitope=="FALSE") {
+    Epitope_Type = "Th" 
+  }
+  else if (MHC_Type=="MHCI" & LBL_Epitope=="TRUE") {
+    Epitope_Type = "CTL/LBL" 
+  }
+  else{
+    Epitope_Type = "Th/LBL" 
+  }
+  data.frame(Unique_Id, MHC_Type, LBL_Epitope, Epitope_Type)  #Save the four elements per row as a dataframe
+}
+
+#Remove temporary variables
+remove(Unique_Id, MHC_Type, LBL_Epitope, Epitope_Type)
+
+#Merge with the full dataframe
+VaxiJen_Localization_Agnostic <- merge(VaxiJen_Localization_Agnostic, VaxiJen_Localization_Agnostic_epitope_type)
 
 #Copy down both versions of epitope lists and all 4 epitope region sequences to Excel
 
-#Any Localization Constructs
+#Any Localization Constructs - Informs Supplementary Tables with Epitope Type columns (3,4, )
 clipr::write_clip(VaxiJen_Localization_Agnostic)
 clipr::write_clip(Mugunthan_VaxiJen_Localization_Agnostic_Epitope_Region)
 
@@ -1162,7 +1194,119 @@ clipr::write_clip(Mugunthan_VaxiJen_Localization_Agnostic_Epitope_Region)
 setwd("C:/Users/David.Bradshaw/OneDrive - USDA/Documents/Projects_Reverse_Vaccinology/UK1/cleaned_up/Outbreak_Comparisons")
 write.fasta(as.list(dput(VaxiJen_Localization_Agnostic$Peptide)), as.list(dput(VaxiJen_Localization_Agnostic$Unique_Id)), "VaxiJen_Localization_Agnostic_Construct_Epitopes.fasta")
 
+####MEVC Construct by Residue Annotation Table####
+
+#Save the full construct sequence (epitope region and adjuvant)
+Any_Loc_MEVC_Chicken_Linkers_Construct_Sequence <- "MAQVINTNSLSLLTQNNLNKSQSALGTAIERLSSGLRINSAKDDAAGQAIANRFTANIKGLTQASRNANDGISIAQTTEGALNEINNNLQRVRELAVQSANSTNSQSDLDSIQAEITQRLNEIDRVSGQTQFNGVKVLAQDNTLTIQVGANDGETIDIDLKQINSQTLGLDTLNVQQKYKVSDTAATVTGYADTTIALDNSTFKASATGLGGTDQKIDGDLKFDDTTGKYYAKVTVTGGTGKDGYYEVSVDKTNGKVTLAGGATSPLTGGLPATATEDVKNVQVANADLTEAKAALTAAGVTGTASVVKMSYTDNNGKTIDGGLAVKVGDDYYSATQNKDGSISINTTKYTADDGTSKTALNKLGGADGKTEVVSIGGKTYAASKAEGHNFKAQPDLAEAAATTTENPLQKIDAALAQVDTLRSDLGAVQNRFNSAITNLGNTVNNLTSARSRIEDSDYATEVSNMSRAQILQQAGTSVLAQANQVPQNVLSLLREAAAKIEGEDMRLAAAYGEDRRTLNVAAYTEREGKAAAAAYKEDNELREAAAYSEADVQGHVAAYYEYNFRTAYAAYYEKTDNTRMAAYKDKAFDVKLAAYKETGERLSIGPGPGASGDLTVEVKESDGSGPGPGAQKLAIEIRDGDQRRGPGPGRAGYRADVKNNDSNVGPGPGLHYFSDDKGSDGDQTGPGPGQNIAVVRRADGSGTSGPGPGHWEITNTFRYRINEHGPGPGTPGLRFDHHSIVGDNGPGPGQGNPVTGTDKQAVSPGPGPGTALTFSRDGKTQDKNKKLENEFKGRAKKTWHARFAYDKEKTDRKKKRPFAGNTGTVDDKDKKAAYSNSKRTNDQQDRKKSRGNYRYTDKDLVKYKKARYRFEYVRRSSDIRKKSDGTKINYANKVINNKKDERVALREAKKAENATTDKAKKKERIAEKGAEAAAK"
+
+
+#Split the string by every character to a column
+construct_pos_df <- data.frame(strsplit(Any_Loc_MEVC_Chicken_Linkers_Construct_Sequence, ""))
+
+#Change the column name
+colnames(construct_pos_df) <- "Residue"
+
+#Make the row name into a column to act as the position column
+construct_pos_df <- rownames_to_column(construct_pos_df, "MEVC_Pos")
+
+#Make it numeric
+construct_pos_df$MEVC_Pos <- as.numeric(construct_pos_df$MEVC_Pos)
+
+#Add a Region category based upon length of each region (Adjuvant, CTL, Th, DP-LBL)
+construct_pos_df$Region <- c(rep("Adjuvant", 495), rep("CTL", 110), rep("Th", 179), rep("DP-LBL", 152))
+
+#Add a detailed column based upon the Unique ID and Linkers
+construct_pos_df$Detailed <-c(rep("Adjuvant", 495),
+                              rep("EAAAK Linker", 5),
+                              rep(VaxiJen_MHCI_Localization_Agnostic$Unique_Id[1], 9),
+                              rep("AAY Linker", 3),
+                              rep(VaxiJen_MHCI_Localization_Agnostic$Unique_Id[2], 9),
+                              rep("AAY Linker", 3),
+                              rep(VaxiJen_MHCI_Localization_Agnostic$Unique_Id[3], 9),
+                              rep("AAY Linker", 3),
+                              rep(VaxiJen_MHCI_Localization_Agnostic$Unique_Id[4], 9),
+                              rep("AAY Linker", 3),
+                              rep(VaxiJen_MHCI_Localization_Agnostic$Unique_Id[5], 9),
+                              rep("AAY Linker", 3),
+                              rep(VaxiJen_MHCI_Localization_Agnostic$Unique_Id[6], 9),
+                              rep("AAY Linker", 3),
+                              rep(VaxiJen_MHCI_Localization_Agnostic$Unique_Id[7], 9),
+                              rep("AAY Linker", 3),
+                              rep(VaxiJen_MHCI_Localization_Agnostic$Unique_Id[8], 9),
+                              rep("AAY Linker", 3),
+                              rep(VaxiJen_MHCI_Localization_Agnostic$Unique_Id[9], 9),
+                              rep("GPGPG Linker", 5),
+                              rep(VaxiJen_MHCII_Localization_Agnostic$Unique_Id[1], 15),
+                              rep("GPGPG Linker", 5),
+                              rep(VaxiJen_MHCII_Localization_Agnostic$Unique_Id[2], 15),
+                              rep("GPGPG Linker", 5),
+                              rep(VaxiJen_MHCII_Localization_Agnostic$Unique_Id[3], 15),
+                              rep("GPGPG Linker", 5),
+                              rep(VaxiJen_MHCII_Localization_Agnostic$Unique_Id[4], 15),
+                              rep("GPGPG Linker", 5),
+                              rep(VaxiJen_MHCII_Localization_Agnostic$Unique_Id[5], 15),
+                              rep("GPGPG Linker", 5),
+                              rep(VaxiJen_MHCII_Localization_Agnostic$Unique_Id[6], 15),
+                              rep("GPGPG Linker", 5),
+                              rep(VaxiJen_MHCII_Localization_Agnostic$Unique_Id[7], 15),
+                              rep("GPGPG Linker", 5),
+                              rep(VaxiJen_MHCII_Localization_Agnostic$Unique_Id[8], 15),
+                              rep("GPGPG Linker", 5),
+                              rep(VaxiJen_MHCII_Localization_Agnostic$Unique_Id[9], 15),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[1], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[1])),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[2], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[2])),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[3], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[3])),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[4], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[4])),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[5], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[5])),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[6], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[6])),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[7], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[7])),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[8], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[8])),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[9], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[9])),
+                              rep("KK Linker", 2),
+                              rep(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Unique_Id[10], nchar(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary_LBL$Peptide[10])),
+                              rep("EAAAK Linker", 5))
+
+#Add annotation columns
+construct_pos_df_anno <-
+  construct_pos_df %>%
+  merge(subset(Post_Filtering_UK1_Nonoverlapping_Unique_Peptide_Summary, select=c("Unique_Id", "Identity", "MHC_Type", "MHC_Allele", "Pos", 
+                                                                                  "GenBank.Protein.Name", "GenBank.Protein.Description",  "RefSeq.Protein.Description",
+                                                                                  "Similar.Salmonella.Proteins.Protein.Names", "Similar.Salmonella.Proteins.Descriptions", 
+                                                                                  "Localization", "Category", "Gene.Name.Localization",  
+                                                                                  "Ontology.Terms", "GO.Functions")),
+        all.x = TRUE, by.x="Detailed", by.y = "Unique_Id")
+
+
 ####PHASE IV - CONSTRUCT EVALUATION####
+
+####Molecular Docking  - Interacting MEVC Residues####
+
+#Upload docking interacting TLR positions table
+Docking_Interactions_TLR_by_MEVC_Position <- read.delim("Phase_IV_Construct_Evaluation/Step_8_Docking/Docking_Interactions_TLR_by_MEVC_Position.txt")
+
+#Check the table
+table(Docking_Interactions_TLR_by_MEVC_Position$TLR)
+# TLR1  TLR2 
+# 15    19  
+
+#Merge it with the construct dataframe
+Docking_Interactions_TLR_by_MEVC_Position_Anno <-
+  merge(Docking_Interactions_TLR_by_MEVC_Position,
+        construct_pos_df_anno,
+        all.x = TRUE)
+
+#Save it to Excel
+clipr::write_clip(Docking_Interactions_TLR_by_MEVC_Position_Anno)
+#Informs Supplementary Table 8
 
 ####Molecular Dynamics Graphics####
 
@@ -1181,6 +1325,7 @@ Loc_Indpdt <- 936
 ####Localization Independent Docking to TLR1/2 Heteroodimer####
 
 ###Pre-Production Run####
+#Informs Supplementary Table 8
 
 ##Potential Energy
 #Load in the xvg file for Potential Energy
@@ -1190,7 +1335,7 @@ Loc_Indpdt_TLR1_2_potential_E <- readXVG("TLR1_2_Visualizations/potential.xvg")
 Loc_Indpdt_TLR1_2_potential_E$Time <- as.numeric(Loc_Indpdt_TLR1_2_potential_E$Time)
 Loc_Indpdt_TLR1_2_potential_E$Potential <- as.numeric(Loc_Indpdt_TLR1_2_potential_E$Potential)
 
-#Plot the data
+#Plot the data - Supplementary Figure 2A
 Loc_Indpdt_TLR1_2_potential_E_line_graph <- ggplot(Loc_Indpdt_TLR1_2_potential_E, aes(x=Time, y=Potential)) +
   geom_line() + 
   #ggtitle("Potential Energy") +
@@ -1214,7 +1359,7 @@ Loc_Indpdt_TLR1_2_nvt_temperature <- readXVG("TLR1_2_Visualizations/nvt_temperat
 Loc_Indpdt_TLR1_2_nvt_temperature$Time <- as.numeric(Loc_Indpdt_TLR1_2_nvt_temperature$Time)
 Loc_Indpdt_TLR1_2_nvt_temperature$Temperature <- as.numeric(Loc_Indpdt_TLR1_2_nvt_temperature$Temperature)
 
-#Plot the data
+#Plot the data - Supplementary Figure 2C
 Loc_Indpdt_TLR1_2_nvt_temperature_line_graph <- ggplot(Loc_Indpdt_TLR1_2_nvt_temperature, aes(x=Time, y=Temperature)) +
   geom_line() + 
   #ggtitle("NVT - Temperature") +
@@ -1243,7 +1388,7 @@ colnames(Loc_Indpdt_TLR1_2_nvt_rmsd) <- c("Time", "RMSD")
 Loc_Indpdt_TLR1_2_nvt_rmsd$Time <- as.numeric(Loc_Indpdt_TLR1_2_nvt_rmsd$Time)
 Loc_Indpdt_TLR1_2_nvt_rmsd$RMSD <- as.numeric(Loc_Indpdt_TLR1_2_nvt_rmsd$RMSD)
 
-#Plot the data
+#Plot the data - Supplementary Figure 2B
 Loc_Indpdt_TLR1_2_nvt_rmsd_line_graph <- ggplot(Loc_Indpdt_TLR1_2_nvt_rmsd, aes(x=Time, y=RMSD)) +
   geom_line() + 
   #ggtitle("NVT - RMSD") +
@@ -1269,7 +1414,7 @@ Loc_Indpdt_TLR1_2_npt_pressure <- readXVG("TLR1_2_Visualizations/npt_pressure.xv
 Loc_Indpdt_TLR1_2_npt_pressure$Time <- as.numeric(Loc_Indpdt_TLR1_2_npt_pressure$Time)
 Loc_Indpdt_TLR1_2_npt_pressure$Pressure <- as.numeric(Loc_Indpdt_TLR1_2_npt_pressure$Pressure)
 
-#Plot the data
+#Plot the data - Supplementary Figure 2E
 Loc_Indpdt_TLR1_2_npt_pressure_line_graph <- ggplot(Loc_Indpdt_TLR1_2_npt_pressure, aes(x=Time, y=Pressure)) +
   geom_line() + 
   #ggtitle("NPT - Pressure") +
@@ -1298,7 +1443,7 @@ colnames(Loc_Indpdt_TLR1_2_npt_rmsd) <- c("Time", "RMSD")
 Loc_Indpdt_TLR1_2_npt_rmsd$Time <- as.numeric(Loc_Indpdt_TLR1_2_npt_rmsd$Time)
 Loc_Indpdt_TLR1_2_npt_rmsd$RMSD <- as.numeric(Loc_Indpdt_TLR1_2_npt_rmsd$RMSD)
 
-#Plot the data
+#Plot the data - Supplementary Figure 2D
 Loc_Indpdt_TLR1_2_npt_rmsd_line_graph <- ggplot(Loc_Indpdt_TLR1_2_npt_rmsd, aes(x=Time, y=RMSD)) +
   geom_line() + 
   #ggtitle("NPT - RMSD") +
@@ -1329,7 +1474,7 @@ colnames(Loc_Indpdt_TLR1_2_50_ns_md_rmsd) <- c("Time", "RMSD")
 Loc_Indpdt_TLR1_2_50_ns_md_rmsd$Time <- as.numeric(Loc_Indpdt_TLR1_2_50_ns_md_rmsd$Time)
 Loc_Indpdt_TLR1_2_50_ns_md_rmsd$RMSD <- as.numeric(Loc_Indpdt_TLR1_2_50_ns_md_rmsd$RMSD)
 
-#Plot the data
+#Plot the data - Figure 5A
 Loc_Indpdt_TLR1_2_50_ns_md_rmsd_line_graph <- ggplot(Loc_Indpdt_TLR1_2_50_ns_md_rmsd, aes(x=Time/1000, y=RMSD)) +
   geom_line() + 
   ggtitle("TLR1/2 Heterodimer") +
@@ -1358,7 +1503,7 @@ Loc_Indpdt_TLR1_2_50_ns_md_rmsf$Protein <- c(rep("Construct", Loc_Indpdt), rep("
 Loc_Indpdt_TLR1_2_50_ns_md_rmsf$Residue <- as.numeric(Loc_Indpdt_TLR1_2_50_ns_md_rmsf$Residue)
 Loc_Indpdt_TLR1_2_50_ns_md_rmsf$RMSF <- as.numeric(Loc_Indpdt_TLR1_2_50_ns_md_rmsf$RMSF)
 
-#Plot the data
+#Plot the data - Figure 5B
 Loc_Indpdt_TLR1_2_50_ns_md_rmsf_line_graph <- ggplot(Loc_Indpdt_TLR1_2_50_ns_md_rmsf, aes(x=Residue, y=RMSF,group=Protein)) +
   geom_line(aes(color=Protein)) + 
   #ggtitle("50 ns Production Run - RMSF") +
@@ -1408,7 +1553,7 @@ colnames(Loc_Indpdt_TLR1_2_50_ns_md_gyrate) <- c("Time", "Gyrate")
 Loc_Indpdt_TLR1_2_50_ns_md_gyrate$Time <- as.numeric(Loc_Indpdt_TLR1_2_50_ns_md_gyrate$Time)
 Loc_Indpdt_TLR1_2_50_ns_md_gyrate$Gyrate <- as.numeric(Loc_Indpdt_TLR1_2_50_ns_md_gyrate$Gyrate)
 
-#Plot the data
+#Plot the data - Figure 5C
 Loc_Indpdt_TLR1_2_50_ns_md_gyrate_line_graph <- ggplot(Loc_Indpdt_TLR1_2_50_ns_md_gyrate, aes(x=Time/1000, y=Gyrate)) +
   geom_line() + 
   #ggtitle("50 ns Production Run - Radius of Gyration") +
@@ -1422,267 +1567,9 @@ tiff('TLR1_2_Visualizations/Loc_Indpdt_TLR1_2_50_ns_md_gyrate_line_graph.tiff', 
 Loc_Indpdt_TLR1_2_50_ns_md_gyrate_line_graph
 dev.off()
 
+####Make Joint Figures####
 
-
-####Localization Independent Docking to TLR5 Homodimer####
-
-####Pre-Production Run####
-
-##Potential Energy
-#Load in the xvg file for Potential Energy
-Loc_Indpdt_TLR5_potential_E <- readXVG("TLR5_Visualizations/potential.xvg")
-
-#Change the Time and Potential to numeric values
-Loc_Indpdt_TLR5_potential_E$Time <- as.numeric(Loc_Indpdt_TLR5_potential_E$Time)
-Loc_Indpdt_TLR5_potential_E$Potential <- as.numeric(Loc_Indpdt_TLR5_potential_E$Potential)
-
-#Plot the data
-Loc_Indpdt_TLR5_potential_E_line_graph <- ggplot(Loc_Indpdt_TLR5_potential_E, aes(x=Time, y=Potential)) +
-  geom_line() + 
-  #ggtitle("Potential Energy") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylab(bquote(P[E]~(kJ/mol))) +
-  xlab("Time (ps)") +
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=15), legend.text=element_text(size=12), legend.key.size = unit(0.6,"cm"), legend.title=element_text(size=13))
-Loc_Indpdt_TLR5_potential_E_line_graph
-
-tiff('TLR5_Visualizations/Loc_Indpdt_TLR5_potential_E_line_graph.tiff', units="in", width=16, height=8, res=300)
-Loc_Indpdt_TLR5_potential_E_line_graph
-dev.off()
-
-##NVT Temperature
-#Load in the xvg file for NVT Temperature
-Loc_Indpdt_TLR5_nvt_temperature <- readXVG("TLR5_Visualizations/nvt_temperature.xvg")
-
-#Change the Time and Temperature to numeric values
-Loc_Indpdt_TLR5_nvt_temperature$Time <- as.numeric(Loc_Indpdt_TLR5_nvt_temperature$Time)
-Loc_Indpdt_TLR5_nvt_temperature$Temperature <- as.numeric(Loc_Indpdt_TLR5_nvt_temperature$Temperature)
-
-#Plot the data
-Loc_Indpdt_TLR5_nvt_temperature_line_graph <- ggplot(Loc_Indpdt_TLR5_nvt_temperature, aes(x=Time, y=Temperature)) +
-  geom_line() + 
-  #ggtitle("NVT - Temperature") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylab("Temperature (K)") +
-  xlab("Time (ps)") +
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=15), legend.text=element_text(size=12), legend.key.size = unit(0.6,"cm"), legend.title=element_text(size=13))
-Loc_Indpdt_TLR5_nvt_temperature_line_graph
-
-tiff('TLR5_Visualizations/Loc_Indpdt_TLR5_nvt_temperature_line_graph.tiff', units="in", width=16, height=8, res=300)
-Loc_Indpdt_TLR5_nvt_temperature_line_graph
-dev.off()
-
-#Find the mean throughout the simulation
-mean(Loc_Indpdt_TLR5_nvt_temperature$Temperature)
-#314.6917
-
-##NVT RMSD
-#Load in the xvg file for NVT RMSD
-Loc_Indpdt_TLR5_nvt_rmsd <- readXVG("TLR5_Visualizations/nvt_rmsd.xvg")
-
-#Change the column names
-colnames(Loc_Indpdt_TLR5_nvt_rmsd) <- c("Time", "RMSD")
-
-#Change the Time and RMSD to numeric values
-Loc_Indpdt_TLR5_nvt_rmsd$Time <- as.numeric(Loc_Indpdt_TLR5_nvt_rmsd$Time)
-Loc_Indpdt_TLR5_nvt_rmsd$RMSD <- as.numeric(Loc_Indpdt_TLR5_nvt_rmsd$RMSD)
-
-#Plot the data
-Loc_Indpdt_TLR5_nvt_rmsd_line_graph <- ggplot(Loc_Indpdt_TLR5_nvt_rmsd, aes(x=Time, y=RMSD)) +
-  geom_line() + 
-  #ggtitle("NVT - RMSD") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylab("RMSD (nm)") +
-  xlab("Time (ps)") +
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=15), legend.text=element_text(size=12), legend.key.size = unit(0.6,"cm"), legend.title=element_text(size=13))
-Loc_Indpdt_TLR5_nvt_rmsd_line_graph
-
-tiff('TLR5_Visualizations/Loc_Indpdt_TLR5_nvt_rmsd_line_graph.tiff', units="in", width=16, height=8, res=300)
-Loc_Indpdt_TLR5_nvt_rmsd_line_graph
-dev.off()
-
-#Find the mean throughout the simulation
-mean(Loc_Indpdt_TLR5_nvt_rmsd$RMSD)
-#0.02260239
-
-##NPT Pressure
-#Load in the xvg file for NPT Pressure
-Loc_Indpdt_TLR5_npt_pressure <- readXVG("TLR5_Visualizations/npt_pressure.xvg")
-
-#Change the Time and Pressure to numeric values
-Loc_Indpdt_TLR5_npt_pressure$Time <- as.numeric(Loc_Indpdt_TLR5_npt_pressure$Time)
-Loc_Indpdt_TLR5_npt_pressure$Pressure <- as.numeric(Loc_Indpdt_TLR5_npt_pressure$Pressure)
-
-#Plot the data
-Loc_Indpdt_TLR5_npt_pressure_line_graph <- ggplot(Loc_Indpdt_TLR5_npt_pressure, aes(x=Time, y=Pressure)) +
-  geom_line() + 
-  #ggtitle("NPT - Pressure") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylab("Pressure (bar)") +
-  xlab("Time (ps)") +
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=15), legend.text=element_text(size=12), legend.key.size = unit(0.6,"cm"), legend.title=element_text(size=13))
-Loc_Indpdt_TLR5_npt_pressure_line_graph
-
-tiff('TLR5_Visualizations/Loc_Indpdt_TLR5_npt_pressure_line_graph.tiff', units="in", width=16, height=8, res=300)
-Loc_Indpdt_TLR5_npt_pressure_line_graph
-dev.off()
-
-#Find the mean throughout the simulation
-mean(Loc_Indpdt_TLR5_npt_pressure$Pressure)
-#-3.119037
-
-##NPT RMSD
-#Load in the xvg file for NPT RMSD
-Loc_Indpdt_TLR5_npt_rmsd <- readXVG("TLR5_Visualizations/npt_rmsd.xvg")
-
-#Change the column names
-colnames(Loc_Indpdt_TLR5_npt_rmsd) <- c("Time", "RMSD")
-
-#Change the Time and RMSD to numeric values
-Loc_Indpdt_TLR5_npt_rmsd$Time <- as.numeric(Loc_Indpdt_TLR5_npt_rmsd$Time)
-Loc_Indpdt_TLR5_npt_rmsd$RMSD <- as.numeric(Loc_Indpdt_TLR5_npt_rmsd$RMSD)
-
-#Plot the data
-Loc_Indpdt_TLR5_npt_rmsd_line_graph <- ggplot(Loc_Indpdt_TLR5_npt_rmsd, aes(x=Time, y=RMSD)) +
-  geom_line() + 
-  #ggtitle("NPT - RMSD") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylab("RMSD (nm)") +
-  xlab("Time (ps)") +
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=15), legend.text=element_text(size=12), legend.key.size = unit(0.6,"cm"), legend.title=element_text(size=13))
-Loc_Indpdt_TLR5_npt_rmsd_line_graph
-
-tiff('TLR5_Visualizations/Loc_Indpdt_TLR5_npt_rmsd_line_graph.tiff', units="in", width=16, height=8, res=300)
-Loc_Indpdt_TLR5_npt_rmsd_line_graph
-dev.off()
-
-#Find the mean throughout the simulation
-mean(Loc_Indpdt_TLR5_npt_rmsd$RMSD)
-#0.02388483
-
-####50 ns Production Run####
-
-##RMSD
-#Load in the xvg file for Production Run RMSD
-Loc_Indpdt_TLR5_50_ns_md_rmsd <- readXVG("TLR5_Visualizations/md_50ns_rmsd_medium.xvg")
-
-#Change the column names
-colnames(Loc_Indpdt_TLR5_50_ns_md_rmsd) <- c("Time", "RMSD")
-
-#Change the Time and RMSD to numeric values
-Loc_Indpdt_TLR5_50_ns_md_rmsd$Time <- as.numeric(Loc_Indpdt_TLR5_50_ns_md_rmsd$Time)
-Loc_Indpdt_TLR5_50_ns_md_rmsd$RMSD <- as.numeric(Loc_Indpdt_TLR5_50_ns_md_rmsd$RMSD)
-
-#Plot the data
-Loc_Indpdt_TLR5_50_ns_md_rmsd_line_graph <- ggplot(Loc_Indpdt_TLR5_50_ns_md_rmsd, aes(x=Time/1000, y=RMSD)) +
-  geom_line() + 
-  ggtitle("TLR5 Homodimer") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylab("RMSD (nm)") +
-  xlab("Time (ns)") +
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=15), legend.text=element_text(size=12), legend.key.size = unit(0.6,"cm"), legend.title=element_text(size=13))
-Loc_Indpdt_TLR5_50_ns_md_rmsd_line_graph
-
-tiff('TLR5_Visualizations/Loc_Indpdt_TLR5_50_ns_md_rmsd_line_graph.tiff', units="in", width=16, height=8, res=300)
-Loc_Indpdt_TLR5_50_ns_md_rmsd_line_graph
-dev.off()
-
-#Plot the data
-Loc_Indpdt_TLR5_50_ns_md_rmsd_line_graph_Chand <- ggplot(Loc_Indpdt_TLR5_50_ns_md_rmsd, aes(x=Time/1000, y=RMSD)) +
-  geom_line() + 
-  #ggtitle("50 ns Production Run - RMSD") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylab("RMSD (nm)") +
-  xlab("Time (ns)") +
-  ylim(0,4.0) +
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=15), legend.text=element_text(size=12), legend.key.size = unit(0.6,"cm"), legend.title=element_text(size=13))
-Loc_Indpdt_TLR5_50_ns_md_rmsd_line_graph_Chand
-
-tiff('TLR5_Visualizations/Loc_Indpdt_TLR5_50_ns_md_rmsd_line_graph_Chand.tiff', units="in", width=16, height=8, res=300)
-Loc_Indpdt_TLR5_50_ns_md_rmsd_line_graph_Chand
-dev.off()
-
-##RMSF
-#Load in the xvg file for Production Run RMSF
-Loc_Indpdt_TLR5_50_ns_md_rmsf <- readXVG("TLR5_Visualizations/md_50ns_rmsf_medium.xvg")
-
-#Change the column names
-colnames(Loc_Indpdt_TLR5_50_ns_md_rmsf) <- c("Residue", "RMSF")
-
-#Add a third column based upon which part of the complex each datapoint came by
-Loc_Indpdt_TLR5_50_ns_md_rmsf$Protein <- c(rep("Construct", Loc_Indpdt), rep("TLR5_A", 441), rep("TLR5_B", 440))
-
-#Change the Time and RMSF to numeric values
-Loc_Indpdt_TLR5_50_ns_md_rmsf$Residue <- as.numeric(Loc_Indpdt_TLR5_50_ns_md_rmsf$Residue)
-Loc_Indpdt_TLR5_50_ns_md_rmsf$RMSF <- as.numeric(Loc_Indpdt_TLR5_50_ns_md_rmsf$RMSF)
-
-#Plot the data
-Loc_Indpdt_TLR5_50_ns_md_rmsf_line_graph <- ggplot(Loc_Indpdt_TLR5_50_ns_md_rmsf, aes(x=Residue, y=RMSF,group=Protein)) +
-  geom_line(aes(color=Protein)) + 
-  #ggtitle("50 ns Production Run - RMSF") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylab("RMSF (nm)") +
-  xlab("Position (bp)") +
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=15))
-Loc_Indpdt_TLR5_50_ns_md_rmsf_line_graph
-
-tiff('TLR5_Visualizations/Loc_Indpdt_TLR5_50_ns_md_rmsf_line_graph.tiff', units="in", width=16, height=8, res=300)
-Loc_Indpdt_TLR5_50_ns_md_rmsf_line_graph
-dev.off()
-
-#Summarize the fluctuations throughout the proteins
-Loc_Indpdt_TLR5_50_ns_md_rmsf %>%
-  group_by(Protein) %>%
-  summarise_at(vars(RMSF), list(Min = min, Mean = mean, Sd = sd, Max = max))
-# 1 Construct 0.254 0.790 0.247 1.49 
-# 2 TLR5_A    0.190 0.375 0.111 0.780
-# 3 TLR5_B    0.244 0.565 0.237 1.17 
-
-#Get changes in consecutive residues in RMSF
-Loc_Indpdt_TLR5_50_ns_md_rmsf <- Loc_Indpdt_TLR5_50_ns_md_rmsf %>%
-  group_by(Protein) %>%
-  mutate(Diff = RMSF - lag(RMSF))
-
-#Make a absolute version of the differences
-Loc_Indpdt_TLR5_50_ns_md_rmsf$Abs_Diff <- abs(Loc_Indpdt_TLR5_50_ns_md_rmsf$Diff)
-
-#Summarize changes in consecutive residues in RMSF
-Loc_Indpdt_TLR5_50_ns_md_rmsf %>%
-  na.omit() %>%
-  group_by(Protein) %>%
-  summarise_at(vars(Abs_Diff), list(Min = min, Mean = mean, Sd = sd, Max = max))
-# 1 Construct 0        0.0406 0.0320 0.195 
-# 2 TLR5_A    0.000100 0.0272 0.0188 0.108 
-# 3 TLR5_B    0.000100 0.0231 0.0165 0.0865
-
-##Radius of Gyration
-#Load in the xvg file for Production Run Gyrate
-Loc_Indpdt_TLR5_50_ns_md_gyrate <- readXVG("TLR5_Visualizations/md_50ns_gyrate_medium.xvg")
-
-#Change the column names
-colnames(Loc_Indpdt_TLR5_50_ns_md_gyrate) <- c("Time", "Gyrate")
-
-#Change the Time and Gyrate to numeric values
-Loc_Indpdt_TLR5_50_ns_md_gyrate$Time <- as.numeric(Loc_Indpdt_TLR5_50_ns_md_gyrate$Time)
-Loc_Indpdt_TLR5_50_ns_md_gyrate$Gyrate <- as.numeric(Loc_Indpdt_TLR5_50_ns_md_gyrate$Gyrate)
-
-#Plot the data
-Loc_Indpdt_TLR5_50_ns_md_gyrate_line_graph <- ggplot(Loc_Indpdt_TLR5_50_ns_md_gyrate, aes(x=Time/1000, y=Gyrate)) +
-  geom_line() + 
-  #ggtitle("50 ns Production Run - Radius of Gyration") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  ylab("Rg (nm)") +
-  xlab("Time (ns)") +
-  theme(axis.text=element_text(size=13), axis.title=element_text(size=15), legend.text=element_text(size=12), legend.key.size = unit(0.6,"cm"), legend.title=element_text(size=13))
-Loc_Indpdt_TLR5_50_ns_md_gyrate_line_graph
-
-tiff('TLR5_Visualizations/Loc_Indpdt_TLR5_50_ns_md_gyrate_line_graph.tiff', units="in", width=16, height=8, res=300)
-Loc_Indpdt_TLR5_50_ns_md_gyrate_line_graph
-dev.off()
-
-####Make Joint Figures###
-
-#Make a joint figure of pre 50 ns simulation results for TLR1/2 Complex 
+#Make a joint figure of pre 50 ns simulation results for TLR1/2 Complex - Supplementary Figure 2
 Sup_Fig_3_Pre_Prod_TLR1_2_Mol_Dyn <- ggarrange(Loc_Indpdt_TLR1_2_potential_E_line_graph,
                                                Loc_Indpdt_TLR1_2_nvt_rmsd_line_graph,
                                                Loc_Indpdt_TLR1_2_nvt_temperature_line_graph,
@@ -1696,39 +1583,19 @@ tiff('Supplementary Figure 3 - Pre-Production TLR1-2 Molecular Dynamics - GROMAC
 Sup_Fig_3_Pre_Prod_TLR1_2_Mol_Dyn
 dev.off()
 
-#Make a joint figure of pre 50 ns simulation results for TLR5 Complex 
-Sup_Fig_4_Pre_Prod_TLR5_Mol_Dyn <- ggarrange(Loc_Indpdt_TLR5_potential_E_line_graph,
-                                             Loc_Indpdt_TLR5_nvt_rmsd_line_graph,
-                                             Loc_Indpdt_TLR5_nvt_temperature_line_graph,
-                                             Loc_Indpdt_TLR5_npt_rmsd_line_graph,
-                                             Loc_Indpdt_TLR5_npt_pressure_line_graph,
-                                             labels = c("A", "B", "C", "D", "E"),
-                                             ncol = 2, nrow = 3)
-Sup_Fig_4_Pre_Prod_TLR5_Mol_Dyn
+#Make a joint figure of 50 ns simulations results - Figure 5
+Figure_5_Mol_Dyn_TLR1_2_Only <- ggarrange(Loc_Indpdt_TLR1_2_50_ns_md_rmsd_line_graph,
+                                          Loc_Indpdt_TLR1_2_50_ns_md_rmsf_line_graph,
+                                          Loc_Indpdt_TLR1_2_50_ns_md_gyrate_line_graph,
+                                          labels = c("A", "B", "C"),
+                                          ncol = 1, nrow = 3)
+Figure_5_Mol_Dyn_TLR1_2_Only
 
-tiff('Supplementary Figure 4 - Pre-Production TLR5 Molecular Dynamics - GROMACS.tiff', units="in", width=8, height=8, res=300)
-Sup_Fig_4_Pre_Prod_TLR5_Mol_Dyn
-dev.off()
+ggsave("C:/Users/David.Bradshaw/OneDrive - USDA/Documents/Manuscripts/UK1_Reverse_Vaccinology/Figures/Figure 5 - Molecular Dynamics - TLR1-2 Only - GROMACS.tiff",
+       Figure_5_Mol_Dyn_TLR1_2_Only, 
+       device = "tiff", width = 8, height = 8, dpi = 600)
 
-
-#Make a joint figure of 50 ns simulations results 
-Figure_5_Mol_Dyn <- ggarrange(Loc_Indpdt_TLR1_2_50_ns_md_rmsd_line_graph,
-                              Loc_Indpdt_TLR5_50_ns_md_rmsd_line_graph,
-                              Loc_Indpdt_TLR1_2_50_ns_md_rmsf_line_graph,
-                              Loc_Indpdt_TLR5_50_ns_md_rmsf_line_graph,
-                              Loc_Indpdt_TLR1_2_50_ns_md_gyrate_line_graph,
-                              Loc_Indpdt_TLR5_50_ns_md_gyrate_line_graph,
-                              labels = c("A", "B", "C", "D", "E", "F"),
-                              ncol = 2, nrow = 3)
-Figure_5_Mol_Dyn
-
-
-
-tiff('Figure 5 - Molecular Dynamics - GROMACS.tiff', units="in", width=8, height=8, res=300)
-Figure_5_Mol_Dyn
-dev.off()
-
-####Epitope Homology to PulseNet-Outbreak Isolates
+####Epitope Homology to PulseNet-Outbreak Isolates####
 
 #Load libraries
 library(tidyverse)
@@ -2241,29 +2108,6 @@ length(unique(PulseNet_proteomes_epitope_homology_Step_1_QCed$Proteome_Name))
 #Send it to HPC
 write_delim(PulseNet_proteomes_epitope_homology_Step_1_QCed, "PulseNet_proteomes_epitope_homology_Step_1_QCed.txt")
 
-##Post epitope - proteome blasting summary
-
-#Upload results
-PulseNet_proteomes_epitope_homology_summary <- read.delim("PulseNet_proteomes_epitope_homology_summary.txt", header = TRUE)
-
-#Get distibrution of epitopes with 100% identity and coverage (lengths of 9 or 15 for MHCI or MCHII respectively)
-#with homology to 99% of PulseNet Proteomes
-table(PulseNet_proteomes_epitope_homology_summary$Full_0_GT_99)
-# FALSE  TRUE 
-# 9    19
-
-#Get distibrution of epitopes with 100% identity and coverage (lengths of 9 or 15 for MHCI or MCHII respectively)
-#with homology to 90% of PulseNet Proteomes
-table(PulseNet_proteomes_epitope_homology_summary$Full_0_GT_90)
-# FALSE  TRUE 
-# 3    25
-
-#Get distibrution of epitopes with >= 88% identity and coverage (lengths of 9/8 or 15/14 for MHCI or MCHII respectively)
-#with homology to 90% of PulseNet Proteomes
-table(PulseNet_proteomes_epitope_homology_summary$Partial_1_GT_90)
-# FALSE  TRUE 
-# 1    27
-
 ####Overlap with Positive Homology Isolates####
 
 #Upload list of all Enteritidis, Typhimurium, Infantis, Kentucky, Hadar, and Uganda isolates from NCBI PDD (by Computed Types)
@@ -2342,3 +2186,782 @@ PDD_Esearch_PulseNet_Target_Serovars <- merge(PDD_Esearch_Target_Serovars, Pulse
 table(PDD_Esearch_PulseNet_Target_Serovars$Esearch_Serovar, useNA = "always")
 # Enteritidis       Hadar    Infantis    Kentucky Typhimurium      Uganda        <NA> 
 #   896         181         361           3         382          27           0 
+
+####Post Epitope - Proteome Blasting Summaries####
+
+#####All Assemblies Summary#####
+
+#Upload results
+PulseNet_proteomes_epitope_homology_summary <- read.delim("Outbreak_Comparisons/PulseNet_proteomes_epitope_homology_summary.txt", header = TRUE)
+
+#Get distibrution of epitopes with 100% identity and coverage (lengths of 9 or 15 for MHCI or MCHII respectively)
+#with homology to 99% of PulseNet Proteomes
+table(PulseNet_proteomes_epitope_homology_summary$Full_0_GT_99)
+# FALSE  TRUE 
+# 8    20
+
+#Get distibrution of epitopes with 100% identity and coverage (lengths of 9 or 15 for MHCI or MCHII respectively)
+#with homology to 90% of PulseNet Proteomes
+table(PulseNet_proteomes_epitope_homology_summary$Full_0_GT_90)
+# FALSE  TRUE 
+# 3    25
+
+#Get distibrution of epitopes with >= 88% identity and coverage (lengths of 9/8 or 15/14 for MHCI or MCHII respectively)
+#with homology to 90% of PulseNet Proteomes
+table(PulseNet_proteomes_epitope_homology_summary$Partial_1_GT_90)
+# FALSE  TRUE 
+# 1    27
+
+#Make a narrow version of construct datafame focused on annotations
+VaxiJen_Localization_Agnostic_Narrow <-
+subset(VaxiJen_Localization_Agnostic, 
+       select = c("Unique_Id", "Identity", "MHC_Allele", "Pos", "MHC_Type", "Epitope_Type",  
+                  "GenBank.Protein.Name", "GenBank.Protein.Description", 
+                  "Similar.Salmonella.Proteins.Descriptions", "Similar.Salmonella.Proteins.Protein.Names", 
+                  "RefSeq.Accession", "RefSeq.Protein.Description",
+                  "Localization", "Category", "Gene.Name.Localization", "Ontology.Terms", "GO.Functions"))
+
+#Merge it epitope homology results
+PulseNet_proteomes_epitope_homology_summary_anno <-
+  merge(PulseNet_proteomes_epitope_homology_summary, 
+        select(VaxiJen_Localization_Agnostic_Narrow, -Unique_Id))
+
+#Add a Short_Unique_Id column to the All PulseNet homology dataframe
+PulseNet_proteomes_epitope_homology_summary_anno <- 
+  PulseNet_proteomes_epitope_homology_summary_anno %>%
+  unite(col = "Short_Unique_Id", c(Identity, Pos), sep = "_", remove = FALSE)
+
+#####Epitope by Serovar Summary#####
+
+#Upload results
+PulseNet_proteomes_epitope_homology_serovar_summary <- 
+  read_tsv("Outbreak_Comparisons/PulseNet_proteomes_epitope_homology_serovar_summary.tsv")
+
+#split Unique Id into separate elements and combined Identity and Position into Short Unique Id for Graphics
+PulseNet_proteomes_epitope_homology_serovar_summary <-
+  PulseNet_proteomes_epitope_homology_serovar_summary %>%
+  separate("Unique_Id", into = c("Identity", "MHC_Type", "Extra", "Pos"), sep = "_", remove = FALSE) %>%
+  unite(col = "Short_Unique_Id", c(Identity, Pos), sep = "_", remove = FALSE) %>%
+  select(-Extra)
+
+#Get dimensions
+dim(PulseNet_proteomes_epitope_homology_serovar_summary)
+#28 142 - Unique_Id, Short_Unique_Id, Identity, MHC_Type, Pos, 137 "serovars"
+
+#Remove columns for serovars without names
+PulseNet_proteomes_epitope_homology_serovar_summary_named <-
+  PulseNet_proteomes_epitope_homology_serovar_summary %>%
+  subset(select=-c(Needs.further.review, None))
+
+#Get dimensions
+dim(PulseNet_proteomes_epitope_homology_serovar_summary_named)
+#28 140 - Unique_Id, Short_Unique_Id, Identity, MHC_Type, Pos, 135 serovars
+
+#Add complete homology counts
+PulseNet_proteomes_epitope_homology_serovar_summary_named$Full_Serovar_Homology <- 
+  rowSums(PulseNet_proteomes_epitope_homology_serovar_summary_named[6:140] == 100)
+
+#Add complete homology percentage
+PulseNet_proteomes_epitope_homology_serovar_summary_named$Full_Serovar_Homology_Perct <- 
+  PulseNet_proteomes_epitope_homology_serovar_summary_named$Full_Serovar_Homology/135*100
+
+#Add no homology counts
+PulseNet_proteomes_epitope_homology_serovar_summary_named$No_Serovar_Homology <- 
+  rowSums(PulseNet_proteomes_epitope_homology_serovar_summary_named[6:140] == 0)
+
+#Add no homology percentage
+PulseNet_proteomes_epitope_homology_serovar_summary_named$No_Serovar_Homology_Perct <- 
+  PulseNet_proteomes_epitope_homology_serovar_summary_named$No_Serovar_Homology/135*100
+
+clipr::write_clip(PulseNet_proteomes_epitope_homology_serovar_summary_named)
+
+PulseNet_proteomes_epitope_homology_serovar_summary_named %>%
+  select(Short_Unique_Id, all_of(Top_10_PulseNet_Serovars_by_Count_MEVC_Serovars)) %>%
+clipr::write_clip()
+
+
+PulseNet_proteomes_epitope_homology_summary_anno %>%
+  select(Short_Unique_Id, Epitope_vs_PN_Full_0_Percentage) %>%
+  clipr::write_clip()
+
+ata=PulseNet_proteomes_epitope_homology_summary_anno, 
+aes(x=13.25, y=Short_Unique_Id, fill = Epitope_vs_PN_Full_0_Percentage)
+
+
+#####Serovar by Epitope Summary#####
+
+PulseNet_proteomes_epitope_homology_serovar_summary_statistics <-
+  PulseNet_proteomes_epitope_homology_serovar_summary %>%
+  select(-c(Short_Unique_Id, Identity, MHC_Type, Pos)) %>%
+  column_to_rownames("Unique_Id")
+
+PulseNet_proteomes_epitope_homology_serovar_summary_statistics <-
+  t(PulseNet_proteomes_epitope_homology_serovar_summary_statistics) %>%
+  data.frame()
+
+#Add complete homology counts
+PulseNet_proteomes_epitope_homology_serovar_summary_statistics$Full_Epitope_Homology_Cts <- 
+  rowSums(PulseNet_proteomes_epitope_homology_serovar_summary_statistics[1:28] == 100)
+
+#Add complete homology percentage
+PulseNet_proteomes_epitope_homology_serovar_summary_statistics$Full_Epitope_Homology_Perct <- 
+  PulseNet_proteomes_epitope_homology_serovar_summary_statistics$Full_Epitope_Homology_Cts/28*100
+
+#Add no homology counts
+PulseNet_proteomes_epitope_homology_serovar_summary_statistics$No_Epitope_Homology_Cts <- 
+  rowSums(PulseNet_proteomes_epitope_homology_serovar_summary_statistics[1:28] == 0)
+
+#Add no homology percentage
+PulseNet_proteomes_epitope_homology_serovar_summary_statistics$No_Epitope_Homology_Perct <- 
+  PulseNet_proteomes_epitope_homology_serovar_summary_statistics$No_Epitope_Homology_Cts/28*100
+
+PulseNet_proteomes_epitope_homology_serovar_summary_statistics <-
+  PulseNet_proteomes_epitope_homology_serovar_summary_statistics %>% 
+  rownames_to_column("Serovar") %>%
+  rowwise() %>%
+  mutate(Min = min(c_across(starts_with("AEF"))),
+         Mean = mean(c_across(starts_with("AEF"))),
+         Max = max(c_across(starts_with("AEF"))))
+
+#Send down R_Altered Serovar names, combine with PulseNet dataframe with counts and original PulseNet serovar names
+write_tsv(data.frame(PulseNet_proteomes_epitope_homology_serovar_summary_statistics$Serovar),
+          "Outbreak_Comparisons/PulseNet_proteomes_epitope_homology_R_Altered_Serovars.tsv") 
+
+
+#Upload altered dataframe
+PulseNet_All_summ_CheckM_Pass_by_serovar <- 
+  read_tsv("Outbreak_Comparisons/PulseNet_All_summ_CheckM_Pass_by_serovar.tsv")
+
+#Merge with statistics dataframe
+PulseNet_proteomes_epitope_homology_serovar_summary_statistics <-
+  merge(PulseNet_All_summ_CheckM_Pass_by_serovar,
+        PulseNet_proteomes_epitope_homology_serovar_summary_statistics)
+
+clipr::write_clip(PulseNet_proteomes_epitope_homology_serovar_summary_statistics)
+
+####Epitope by Serovar Counts####
+PulseNet_proteomes_epitope_homology_serovar_counts <-
+  read_tsv("Outbreak_Comparisons/PulseNet_proteomes_epitope_homology_serovar_counts.tsv")
+
+#Check numbers match
+PulseNet_proteomes_epitope_homology_serovar_counts_stats <-
+  PulseNet_proteomes_epitope_homology_serovar_counts%>%
+  rowwise() %>%
+  mutate(Cmplt_Homology_Algnmt_Sum = sum(c_across(-Unique_Id)),
+         PulseNet_Percentage = sum(c_across(-c(Unique_Id, Cmplt_Homology_Algnmt_Sum)))/33672*100) %>%
+  select(Unique_Id, Cmplt_Homology_Algnmt_Sum, PulseNet_Percentage, everything())
+
+
+#split Unique Id into separate elements and combined Identity and Position into Short Unique Id for Graphics
+PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats <-
+  PulseNet_proteomes_epitope_homology_serovar_counts%>%
+  column_to_rownames("Unique_Id") %>%
+  t() %>%
+  data.frame() %>% 
+  rownames_to_column("Serovar") %>%
+  rowwise() %>%
+  mutate(Cmplt_Homology_Algnmt_Min = min(c_across(starts_with("AEF"))),
+         Cmplt_Homology_Algnmt_Mean = mean(c_across(starts_with("AEF"))),
+         Cmplt_Homology_Algnmt_Max = max(c_across(starts_with("AEF"))),
+         Cmplt_Homology_Algnmt_Sum = sum(c_across(starts_with("AEF"))))
+
+#Merge with statistics dataframe
+PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats <-
+  merge(PulseNet_All_summ_CheckM_Pass_by_serovar,
+        PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats)
+
+PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats <-
+  PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats %>%
+  rowwise() %>%
+  mutate(Cmplt_Homology_Algnmt_Perct = Cmplt_Homology_Algnmt_Sum/(Pulsnet_Isolate_Counts*28)*100) %>%
+  select(Serovar, Original_Serovar, Pulsnet_Isolate_Counts, Cmplt_Homology_Algnmt_Sum, Cmplt_Homology_Algnmt_Perct,
+         Cmplt_Homology_Algnmt_Min, Cmplt_Homology_Algnmt_Mean, Cmplt_Homology_Algnmt_Max, everything())
+
+#Number of serovars with greater than 99% of possible complete homology alignments
+PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats %>%
+  filter(Cmplt_Homology_Algnmt_Perct >=99) %>%
+  nrow()
+#6
+
+#Number of serovars with greater than 99% of possible complete homology alignments
+PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats %>%
+  filter(Cmplt_Homology_Algnmt_Perct >=90) %>%
+  nrow()
+#60
+
+
+sum(filter(PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats,
+           Serovar %in%Top_10_PulseNet_Serovars_by_Count)$Pulsnet_Isolate_Counts)/sum(PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats$Pulsnet_Isolate_Counts)*100
+#71.03231%
+
+#Supplementary Table 12
+clipr::write_clip(PulseNet_proteomes_epitope_homology_serovar_counts_by_serovar_stats)
+
+#####Epitope by Serovar Graphics Prep#####
+
+#Make a longer version of the original dataframe for graphics
+PulseNet_proteomes_epitope_homology_serovar_summary_graphics <-
+  PulseNet_proteomes_epitope_homology_serovar_summary %>%
+  pivot_longer(cols = -c(Unique_Id, Short_Unique_Id, Identity, MHC_Type, Pos), names_to = "Serovar", values_to = "Complete_Homology")
+
+#Add column of original serovar names
+PulseNet_proteomes_epitope_homology_serovar_summary_graphics <-
+  merge(PulseNet_proteomes_epitope_homology_serovar_summary_graphics,
+        select(PulseNet_All_summ_CheckM_Pass_by_serovar, Serovar, Original_Serovar))
+
+##Filter for top 10 PulseNet Serovars and MEVC Serovars
+
+#Make list of top 10 serovars by PulseNet counts
+Top_10_PulseNet_Serovars_by_Count <-
+  slice_max(PulseNet_All_summ_CheckM_Pass_by_serovar, order_by=Pulsnet_Isolate_Counts, n=10)$Serovar
+
+#Make list of MEVC serovars
+MEVC_Serovars <- c("Enteritidis", "Typhimurium", "Hadar", "Infantis", "Kentucky", "Uganda")
+
+#Combine lists
+Top_10_PulseNet_Serovars_by_Count_MEVC_Serovars <-
+  unique(c(Top_10_PulseNet_Serovars_by_Count, MEVC_Serovars))
+#12
+
+#Filter graphics to just the top 10 and MEVC serovars
+PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics <-
+  PulseNet_proteomes_epitope_homology_serovar_summary_graphics %>%
+  filter(Serovar %in% Top_10_PulseNet_Serovars_by_Count_MEVC_Serovars)
+
+#Make Serovar a factor in order of number of PulseNet isolates
+PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Serovar <-
+factor(PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Serovar,
+       levels = c("Enteritidis", "Newport", "Typhimurium", "Hadar", "Infantis", 
+                  "Braenderup", "Oranienburg", "I.4.i..", "Javiana", "Thompson", 
+                  "Kentucky", "Uganda"))
+
+#Make Original Serovar a factor in order of number of PulseNet isolates
+PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Original_Serovar <-
+  factor(PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Original_Serovar,
+         levels = c("Enteritidis", "Newport", "Typhimurium", "Hadar", "Infantis", 
+                    "Braenderup", "Oranienburg", "I 4,[5],12:i:-", "Javiana", "Thompson", 
+                    "Kentucky", "Uganda"))
+
+#Get the descending order of short unique ids according to complete homology to all PulseNet isolates percentage
+Short_Unique_Id_cmplt_hmlgy_desc_order <- 
+  arrange(PulseNet_proteomes_epitope_homology_summary_anno, Epitope_vs_PN_Full_0_Percentage)$Short_Unique_Id
+
+#Make the dataframes have Short_Unique_Id in this order as a factor
+PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Short_Unique_Id <-
+  factor(PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Short_Unique_Id,
+         levels = Short_Unique_Id_cmplt_hmlgy_desc_order)
+
+PulseNet_proteomes_epitope_homology_summary_anno$Short_Unique_Id <-
+  factor(PulseNet_proteomes_epitope_homology_summary_anno$Short_Unique_Id,
+         levels = Short_Unique_Id_cmplt_hmlgy_desc_order)
+
+#Make Epitope Type color dataframe
+
+#Create a dataframe of epitope type colors
+Epitope_Type_Colors_ERB <- 
+  data.frame(y_epitope_type_colors = c("#0000FF", "#FF0000", "#CC8D00", "#FAAD00"),
+             Epitope_Type = c("CTL", "Th", "CTL/LBL", "Th/LBL"))
+
+#Add epitope type colors to a separate dataframe of Short_Unique_Ids
+MEVC_Epitope_Type_Colors_ERB <-
+  PulseNet_proteomes_epitope_homology_summary_anno %>%
+  select(Short_Unique_Id, Epitope_Type) %>%
+  merge(Epitope_Type_Colors_ERB) %>%
+  arrange(Short_Unique_Id)
+
+#Make the Epitope type a factor and set the order
+MEVC_Epitope_Type_Colors_ERB$Epitope_Type <- 
+  factor(MEVC_Epitope_Type_Colors_ERB$Epitope_Type,
+         levels = c("CTL", "Th", "CTL/LBL", "Th/LBL"))
+
+#Copy color dataframe to make a blank tile column
+MEVC_Epitope_Type_Blank <- 
+  MEVC_Epitope_Type_Colors
+
+#Make all colors white
+MEVC_Epitope_Type_Blank$y_epitope_type_colors <- "white"
+
+#Add a column to the serovar graphics dataframe to highlight homology values of 100%
+PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Complete_Homology_V2 <-
+  ifelse(PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Complete_Homology==100, 1, 0)
+
+#Change it to a factor
+PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Complete_Homology_V2 <- 
+  as.factor(PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics$Complete_Homology_V2)
+
+#Add a column to the All PulseNet dataframe to highlight homology values of 100%
+PulseNet_proteomes_epitope_homology_summary_anno$Epitope_vs_PN_Full_0_Percentage_V2 <-
+  ifelse(PulseNet_proteomes_epitope_homology_summary_anno$Epitope_vs_PN_Full_0_Percentage==100, 1, 0)
+
+#Change it to a factor
+PulseNet_proteomes_epitope_homology_summary_anno$Epitope_vs_PN_Full_0_Percentage_V2 <- 
+  as.factor(PulseNet_proteomes_epitope_homology_summary_anno$Epitope_vs_PN_Full_0_Percentage_V2)
+
+
+####Epitope Complete Homology by PulseNet Serovar Heatmap - Figure 7####
+epitope_by_serovar_no_100s_text_BLB2_MSM_SMDB_V4 <-
+  #Create the base heatmap
+  ggplot(PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics) +
+  geom_tile(aes(x = Original_Serovar, y = Short_Unique_Id, fill = Complete_Homology), color="black") +
+  scale_fill_gradient2(name = "Complete Homology", low = "firebrick", high = "#177BB5", mid = "purple",
+                       na.value = "white", midpoint = 50, limit = c(0, 100)) +
+  theme(axis.text.x  = element_text(angle=45, hjust=1)) +
+  xlab("Serovar") +
+  ylab("Multiepitope Vaccine Construct Epitope") +
+  
+  #Add text with numbers over the heatmaps
+  geom_text(filter(PulseNet_proteomes_epitope_homology_serovar_summary_named_targeted_graphics, Complete_Homology != 100), 
+            mapping=aes(Original_Serovar, Short_Unique_Id, label = round(Complete_Homology,2)), color = "white", size = 4, fontface = "bold") +
+  
+  #Add a blank heatmap column to the left of the main heatmap
+  new_scale_fill() +
+  geom_tile(data=MEVC_Epitope_Type_Blank, 
+            aes(x=0.45, y=Short_Unique_Id, fill = Epitope_Type, width=0.1)) + 
+  scale_fill_manual(labels = sort(unique(MEVC_Epitope_Type_Blank$Epitope_Type)), 
+                    values = rep("white", length(unique(MEVC_Epitope_Type_Blank$Epitope_Type))),
+                    guide="none") +
+  
+  #Add a heatmap column designating the Epitope Type to left of blank column
+  new_scale_fill() +
+  geom_tile(data=MEVC_Epitope_Type_Colors_ERB, 
+            aes(x=0.25, y=Short_Unique_Id, fill = Epitope_Type, width=0.2), color="black") + 
+  scale_fill_manual("Epitope Type", labels = sort(unique(MEVC_Epitope_Type_Colors_ERB$Epitope_Type)), 
+                    values = unique(arrange(MEVC_Epitope_Type_Colors_ERB, Epitope_Type)$y_epitope_type_colors)) +
+  theme(axis.text=element_text(size=13, color="black", face = "bold"), 
+        axis.title=element_text(size=15, face = "bold"), 
+        legend.text=element_text(size=11, face = "bold"), 
+        legend.key.size = unit(0.7,"cm"), legend.title=element_text(size=13, face = "bold")) +
+  
+  #Add a black column to the right of the main heatmap
+  new_scale_fill() +
+  geom_tile(data=MEVC_Epitope_Type_Blank, 
+            aes(x=13, y=Short_Unique_Id, fill = Epitope_Type, width=0.95)) + 
+  scale_fill_manual(labels = sort(unique(MEVC_Epitope_Type_Blank$Epitope_Type)), 
+                    values = rep("white", length(unique(MEVC_Epitope_Type_Blank$Epitope_Type))),
+                    guide="none") +
+  #Add a column of All PulseNet homology to the right of the blank column
+  new_scale_fill() +
+  geom_tile(data=PulseNet_proteomes_epitope_homology_summary_anno, 
+            aes(x=13.25, y=Short_Unique_Id, fill = Epitope_vs_PN_Full_0_Percentage), color="black") + 
+  scale_fill_gradient2(name = "Complete Homology", low = "firebrick", high = "#177BB5", mid = "purple",
+                       na.value = "white", midpoint = 50, limit = c(0, 100)) +
+  
+  #Add text to label the All Pulsenet column
+  new_scale("text") +
+  geom_text(filter(PulseNet_proteomes_epitope_homology_summary_anno, Epitope_vs_PN_Full_0_Percentage !=100), 
+            mapping=aes(x=13.25, Short_Unique_Id, label = round(Epitope_vs_PN_Full_0_Percentage,2)), 
+            color = "white", size = 4, fontface = "bold") +
+  annotation_custom(grid::textGrob("PulseNet", 
+                                   gp=grid::gpar(fontsize=15,
+                                                 col = "black", 
+                                                 fontface="bold"), rot=45),
+                    xmin=12.75, xmax=12.75, ymin=-1.5, ymax=-1.5) + 
+  coord_cartesian(clip = "off")
+
+epitope_by_serovar_no_100s_text_BLB2_MSM_SMDB_V4
+
+ggsave("C:/Users/David.Bradshaw/OneDrive - USDA/Documents/Manuscripts/UK1_Reverse_Vaccinology/Figures/Figure_7_PulseNet_proteome_epitope_homology_by_serovars_heatmap_V4.tiff",
+       epitope_by_serovar_no_100s_text_BLB2_MSM_SMDB_V4, 
+       device = "tiff", width = 12, height = 8, dpi = 300)
+
+#####Epitope by Isolation Source Summary#####
+
+#Upload results
+PulseNet_proteomes_epitope_homology_isosrc_summary <- 
+  read_tsv("Outbreak_Comparisons/PulseNet_proteomes_epitope_homology_isosrc_summary.tsv")
+
+#split Unique Id into separate elements and combined Identity and Position into Short Unique Id for Graphics
+PulseNet_proteomes_epitope_homology_isosrc_summary <-
+  PulseNet_proteomes_epitope_homology_isosrc_summary %>%
+  separate("Unique_Id", into = c("Identity", "MHC_Type", "Extra", "Pos"), sep = "_", remove = FALSE) %>%
+  unite(col = "Short_Unique_Id", c(Identity, Pos), sep = "_", remove = FALSE) %>%
+  select(-Extra)
+
+#Create a copy to manipulate
+PulseNet_proteomes_epitope_by_isosrc_summary <- 
+  PulseNet_proteomes_epitope_homology_isosrc_summary
+
+#Get dimensions
+dim(PulseNet_proteomes_epitope_by_isosrc_summary)
+#28 12 - Unique_Id, Short_Unique_Id, Identity, MHC_Type, Pos, 7 isolation sources
+
+#Add complete homology counts
+PulseNet_proteomes_epitope_by_isosrc_summary$Full_IsoSrc_Homology <- 
+  rowSums(PulseNet_proteomes_epitope_by_isosrc_summary[6:12] == 100)
+
+#Add complete homology percentage
+PulseNet_proteomes_epitope_by_isosrc_summary$Full_IsoSrc_Homology_Perct <- 
+  PulseNet_proteomes_epitope_by_isosrc_summary$Full_IsoSrc_Homology/7*100
+
+#Add no homology counts
+PulseNet_proteomes_epitope_by_isosrc_summary$No_IsoSrc_Homology <- 
+  rowSums(PulseNet_proteomes_epitope_by_isosrc_summary[6:12] == 0)
+
+#Add no homology percentage
+PulseNet_proteomes_epitope_by_isosrc_summary$No_IsoSrc_Homology_Perct <- 
+  PulseNet_proteomes_epitope_by_isosrc_summary$No_IsoSrc_Homology/7*100
+
+clipr::write_clip(PulseNet_proteomes_epitope_by_isosrc_summary)
+
+#####Isolation Source by Epitope Summary#####
+
+PulseNet_proteomes_isosrc_by_epitope_summary <-
+  PulseNet_proteomes_epitope_homology_isosrc_summary %>%
+  select(-c(Short_Unique_Id, Identity, MHC_Type, Pos)) %>%
+  column_to_rownames("Unique_Id")
+
+PulseNet_proteomes_isosrc_by_epitope_summary <-
+  t(PulseNet_proteomes_isosrc_by_epitope_summary) %>%
+  data.frame()
+
+#Add complete homology counts
+PulseNet_proteomes_isosrc_by_epitope_summary$Full_Epitope_Homology_Cts <- 
+  rowSums(PulseNet_proteomes_isosrc_by_epitope_summary[1:28] == 100)
+
+#Add complete homology percentage
+PulseNet_proteomes_isosrc_by_epitope_summary$Full_Epitope_Homology_Perct <- 
+  PulseNet_proteomes_isosrc_by_epitope_summary$Full_Epitope_Homology_Cts/28*100
+
+#Add no homology counts
+PulseNet_proteomes_isosrc_by_epitope_summary$No_Epitope_Homology_Cts <- 
+  rowSums(PulseNet_proteomes_isosrc_by_epitope_summary[1:28] == 0)
+
+#Add no homology percentage
+PulseNet_proteomes_isosrc_by_epitope_summary$No_Epitope_Homology_Perct <- 
+  PulseNet_proteomes_isosrc_by_epitope_summary$No_Epitope_Homology_Cts/28*100
+
+PulseNet_proteomes_isosrc_by_epitope_summary <-
+  PulseNet_proteomes_isosrc_by_epitope_summary %>% 
+  rownames_to_column("Summarized.isolation.source") %>%
+  rowwise() %>%
+  mutate(Min = min(c_across(starts_with("AEF"))),
+         Mean = mean(c_across(starts_with("AEF"))),
+         Max = max(c_across(starts_with("AEF"))))
+
+#Upload altered dataframe
+PulseNet_All_summ_CheckM_Pass_by_isosrc <- 
+  read_tsv("Outbreak_Comparisons/PulseNet_All_summ_CheckM_Pass_by_isosrc.tsv")
+
+#Merge with statistics dataframe
+PulseNet_proteomes_isosrc_by_epitope_summary <-
+  merge(PulseNet_All_summ_CheckM_Pass_by_isosrc,
+        PulseNet_proteomes_isosrc_by_epitope_summary)
+
+clipr::write_clip(PulseNet_proteomes_isosrc_by_epitope_summary)
+
+
+####Epitope by Summarized.isolation.source Counts####
+PulseNet_proteomes_epitope_homology_isosrc_counts <-
+  read_tsv("Outbreak_Comparisons/PulseNet_proteomes_epitope_homology_isosrc_counts.tsv")
+
+#Check numbers match
+PulseNet_proteomes_epitope_homology_isosrc_counts_stats <-
+  PulseNet_proteomes_epitope_homology_isosrc_counts%>%
+  rowwise() %>%
+  mutate(Cmplt_Homology_Algnmt_Sum = sum(c_across(-Unique_Id)),
+         PulseNet_Percentage = sum(c_across(-c(Unique_Id, Cmplt_Homology_Algnmt_Sum)))/33672*100) %>%
+  select(Unique_Id, Cmplt_Homology_Algnmt_Sum, PulseNet_Percentage, everything())
+
+
+#split Unique Id into separate elements and combined Identity and Position into Short Unique Id for Graphics
+PulseNet_proteomes_epitope_homology_isosrc_counts_by_isosrc_stats <-
+  PulseNet_proteomes_epitope_homology_isosrc_counts%>%
+  column_to_rownames("Unique_Id") %>%
+  t() %>%
+  data.frame() %>% 
+  rownames_to_column("Summarized.isolation.source") %>%
+  rowwise() %>%
+  mutate(Cmplt_Homology_Algnmt_Min = min(c_across(starts_with("AEF"))),
+         Cmplt_Homology_Algnmt_Mean = mean(c_across(starts_with("AEF"))),
+         Cmplt_Homology_Algnmt_Max = max(c_across(starts_with("AEF"))),
+         Cmplt_Homology_Algnmt_Sum = sum(c_across(starts_with("AEF"))))
+
+#Merge with statistics dataframe
+PulseNet_proteomes_epitope_homology_isosrc_counts_by_isosrc_stats <-
+  merge(PulseNet_All_summ_CheckM_Pass_by_isosrc,
+        PulseNet_proteomes_epitope_homology_isosrc_counts_by_isosrc_stats)
+
+PulseNet_proteomes_epitope_homology_isosrc_counts_by_isosrc_stats <-
+  PulseNet_proteomes_epitope_homology_isosrc_counts_by_isosrc_stats %>%
+  rowwise() %>%
+  mutate(Cmplt_Homology_Algnmt_Perct = Cmplt_Homology_Algnmt_Sum/(Pulsnet_Isolate_Counts*28)*100) %>%
+  select(Summarized.isolation.source, Pulsnet_Isolate_Counts, Cmplt_Homology_Algnmt_Sum, Cmplt_Homology_Algnmt_Perct,
+         Cmplt_Homology_Algnmt_Min, Cmplt_Homology_Algnmt_Mean, Cmplt_Homology_Algnmt_Max, everything())
+
+#Number of isolation sources with greater than 99% of possible complete homology alignments
+PulseNet_proteomes_epitope_homology_isosrc_counts_by_isosrc_stats %>%
+  filter(Cmplt_Homology_Algnmt_Perct >=99) %>%
+  nrow()
+#0
+
+#Number of isolation sources with greater than 99% of possible complete homology alignments
+PulseNet_proteomes_epitope_homology_isosrc_counts_by_isosrc_stats %>%
+  filter(Cmplt_Homology_Algnmt_Perct >=90) %>%
+  nrow()
+#7
+
+#Copy to Excel
+clipr::write_clip(PulseNet_proteomes_epitope_homology_isosrc_counts_by_isosrc_stats)
+#Supplementary Table 13
+
+#####Epitope by Isolation Source Graphics Prep#####
+
+#Make a longer version of the original dataframe for graphics
+PulseNet_proteomes_epitope_homology_isosrc_summary_graphics <-
+  PulseNet_proteomes_epitope_homology_isosrc_summary %>%
+  pivot_longer(cols = -c(Unique_Id, Short_Unique_Id, Identity, MHC_Type, Pos), names_to = "Summarized.isolation.source", values_to = "Complete_Homology")
+
+#Make the dataframes have Short_Unique_Id in this order as a factor
+PulseNet_proteomes_epitope_homology_isosrc_summary_graphics$Short_Unique_Id <-
+  factor(PulseNet_proteomes_epitope_homology_isosrc_summary_graphics$Short_Unique_Id,
+         levels = Short_Unique_Id_cmplt_hmlgy_desc_order)
+
+#Merge to get original isolation source verbiage
+PulseNet_proteomes_epitope_homology_isosrc_summary_graphics <-
+  merge(PulseNet_proteomes_epitope_homology_isosrc_summary_graphics, 
+        PulseNet_All_summ_CheckM_Pass_by_isosrc)
+
+
+PulseNet_All_summ_CheckM_Pass_by_isosrc_graphics <-
+  PulseNet_All_summ_CheckM_Pass_by_isosrc
+
+#Add a column designating a commaed version of the PulseNet Isolate Counts
+PulseNet_All_summ_CheckM_Pass_by_isosrc$Pulsnet_Isolate_Counts_commaed <- 
+  formatC(PulseNet_All_summ_CheckM_Pass_by_isosrc$Pulsnet_Isolate_Counts, format="d", big.mark=",")
+
+#Add a column to create an x-axis default-ggplot2 based label if needed
+PulseNet_All_summ_CheckM_Pass_by_isosrc$X_axis_default_label <- 
+  paste0(PulseNet_All_summ_CheckM_Pass_by_isosrc$Short.Summarized.isolation.source, 
+         "\n n=", 
+         PulseNet_All_summ_CheckM_Pass_by_isosrc$Pulsnet_Isolate_Counts_commaed)
+
+#Add a column to create an x-axis ggtext based label if needed
+PulseNet_All_summ_CheckM_Pass_by_isosrc$X_axis_ggtext_label <- 
+  paste0(PulseNet_All_summ_CheckM_Pass_by_isosrc$Short.Summarized.isolation.source, 
+         "<br> n=", 
+         PulseNet_All_summ_CheckM_Pass_by_isosrc$Pulsnet_Isolate_Counts_commaed)
+
+####Epitope Complete Homology by PulseNet Isolation Source Heatmap - Supplementary Figure 6####
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####Epitope by Outbreak Source Summary#####
+
+#Upload results
+PulseNet_proteomes_epitope_homology_otbksrc_summary <- 
+  read_tsv("Outbreak_Comparisons/PulseNet_proteomes_epitope_homology_otbksrc_summary.tsv")
+
+#split Unique Id into separate elements and combined Identity and Position into Short Unique Id for Graphics
+PulseNet_proteomes_epitope_homology_otbksrc_summary <-
+  PulseNet_proteomes_epitope_homology_otbksrc_summary %>%
+  separate("Unique_Id", into = c("Identity", "MHC_Type", "Extra", "Pos"), sep = "_", remove = FALSE) %>%
+  unite(col = "Short_Unique_Id", c(Identity, Pos), sep = "_", remove = FALSE) %>%
+  select(-Extra)
+
+#Create a copy to manipulate
+PulseNet_proteomes_epitope_by_otbksrc_summary <- 
+  PulseNet_proteomes_epitope_homology_otbksrc_summary
+
+#Get dimensions
+dim(PulseNet_proteomes_epitope_by_otbksrc_summary)
+#28 13 - Unique_Id, Short_Unique_Id, Identity, MHC_Type, Pos, 8 outbreak sources
+
+#Add complete homology counts
+PulseNet_proteomes_epitope_by_otbksrc_summary$Full_IsoSrc_Homology <- 
+  rowSums(PulseNet_proteomes_epitope_by_otbksrc_summary[6:13] == 100)
+
+#Add complete homology percentage
+PulseNet_proteomes_epitope_by_otbksrc_summary$Full_IsoSrc_Homology_Perct <- 
+  PulseNet_proteomes_epitope_by_otbksrc_summary$Full_IsoSrc_Homology/8*100
+
+#Add no homology counts
+PulseNet_proteomes_epitope_by_otbksrc_summary$No_IsoSrc_Homology <- 
+  rowSums(PulseNet_proteomes_epitope_by_otbksrc_summary[6:13] == 0)
+
+#Add no homology percentage
+PulseNet_proteomes_epitope_by_otbksrc_summary$No_IsoSrc_Homology_Perct <- 
+  PulseNet_proteomes_epitope_by_otbksrc_summary$No_IsoSrc_Homology/8*100
+
+clipr::write_clip(PulseNet_proteomes_epitope_by_otbksrc_summary)
+
+#####Outbreak Source by Epitope Summary#####
+
+PulseNet_proteomes_otbksrc_by_epitope_summary <-
+  PulseNet_proteomes_epitope_homology_otbksrc_summary %>%
+  select(-c(Short_Unique_Id, Identity, MHC_Type, Pos)) %>%
+  column_to_rownames("Unique_Id")
+
+PulseNet_proteomes_otbksrc_by_epitope_summary <-
+  t(PulseNet_proteomes_otbksrc_by_epitope_summary) %>%
+  data.frame()
+
+#Add complete homology counts
+PulseNet_proteomes_otbksrc_by_epitope_summary$Full_Epitope_Homology_Cts <- 
+  rowSums(PulseNet_proteomes_otbksrc_by_epitope_summary[1:28] == 100)
+
+#Add complete homology percentage
+PulseNet_proteomes_otbksrc_by_epitope_summary$Full_Epitope_Homology_Perct <- 
+  PulseNet_proteomes_otbksrc_by_epitope_summary$Full_Epitope_Homology_Cts/28*100
+
+#Add no homology counts
+PulseNet_proteomes_otbksrc_by_epitope_summary$No_Epitope_Homology_Cts <- 
+  rowSums(PulseNet_proteomes_otbksrc_by_epitope_summary[1:28] == 0)
+
+#Add no homology percentage
+PulseNet_proteomes_otbksrc_by_epitope_summary$No_Epitope_Homology_Perct <- 
+  PulseNet_proteomes_otbksrc_by_epitope_summary$No_Epitope_Homology_Cts/28*100
+
+PulseNet_proteomes_otbksrc_by_epitope_summary <-
+  PulseNet_proteomes_otbksrc_by_epitope_summary %>% 
+  rownames_to_column("Summarized.outbreak.source") %>%
+  rowwise() %>%
+  mutate(Min = min(c_across(starts_with("AEF"))),
+         Mean = mean(c_across(starts_with("AEF"))),
+         Max = max(c_across(starts_with("AEF"))))
+
+#Upload altered dataframe
+PulseNet_All_summ_CheckM_Pass_by_otbksrc <- 
+  read_tsv("Outbreak_Comparisons/PulseNet_All_summ_CheckM_Pass_by_otbksrc.txt")
+
+#Merge with statistics dataframe
+PulseNet_proteomes_otbksrc_by_epitope_summary <-
+  merge(PulseNet_All_summ_CheckM_Pass_by_otbksrc,
+        PulseNet_proteomes_otbksrc_by_epitope_summary)
+
+clipr::write_clip(PulseNet_proteomes_otbksrc_by_epitope_summary)
+
+
+####Epitope by Summarized Outbreak Source Counts####
+PulseNet_proteomes_epitope_homology_otbksrc_counts <-
+  read_tsv("Outbreak_Comparisons/PulseNet_proteomes_epitope_homology_otbksrc_counts.tsv")
+
+#Check numbers match
+PulseNet_proteomes_epitope_homology_otbksrc_counts_stats <-
+  PulseNet_proteomes_epitope_homology_otbksrc_counts%>%
+  rowwise() %>%
+  mutate(Cmplt_Homology_Algnmt_Sum = sum(c_across(-Unique_Id)),
+         PulseNet_Percentage = sum(c_across(-c(Unique_Id, Cmplt_Homology_Algnmt_Sum)))/33672*100) %>%
+  select(Unique_Id, Cmplt_Homology_Algnmt_Sum, PulseNet_Percentage, everything())
+
+
+#split Unique Id into separate elements and combined Identity and Position into Short Unique Id for Graphics
+PulseNet_proteomes_epitope_homology_otbksrc_counts_by_otbksrc_stats <-
+  PulseNet_proteomes_epitope_homology_otbksrc_counts%>%
+  column_to_rownames("Unique_Id") %>%
+  t() %>%
+  data.frame() %>% 
+  rownames_to_column("Summarized.outbreak.source") %>%
+  rowwise() %>%
+  mutate(Cmplt_Homology_Algnmt_Min = min(c_across(starts_with("AEF"))),
+         Cmplt_Homology_Algnmt_Mean = mean(c_across(starts_with("AEF"))),
+         Cmplt_Homology_Algnmt_Max = max(c_across(starts_with("AEF"))),
+         Cmplt_Homology_Algnmt_Sum = sum(c_across(starts_with("AEF"))))
+
+#Merge with statistics dataframe
+PulseNet_proteomes_epitope_homology_otbksrc_counts_by_otbksrc_stats <-
+  merge(PulseNet_All_summ_CheckM_Pass_by_otbksrc,
+        PulseNet_proteomes_epitope_homology_otbksrc_counts_by_otbksrc_stats)
+
+PulseNet_proteomes_epitope_homology_otbksrc_counts_by_otbksrc_stats <-
+  PulseNet_proteomes_epitope_homology_otbksrc_counts_by_otbksrc_stats %>%
+  rowwise() %>%
+  mutate(Cmplt_Homology_Algnmt_Perct = Cmplt_Homology_Algnmt_Sum/(Pulsnet_Isolate_Counts*28)*100) %>%
+  select(Summarized.outbreak.source, Pulsnet_Isolate_Counts, Cmplt_Homology_Algnmt_Sum, Cmplt_Homology_Algnmt_Perct,
+         Cmplt_Homology_Algnmt_Min, Cmplt_Homology_Algnmt_Mean, Cmplt_Homology_Algnmt_Max, everything())
+
+#Number of isolation sources with greater than 99% of possible complete homology alignments
+PulseNet_proteomes_epitope_homology_otbksrc_counts_by_otbksrc_stats %>%
+  filter(Cmplt_Homology_Algnmt_Perct >=99) %>%
+  nrow()
+#0
+
+#Number of isolation sources with greater than 99% of possible complete homology alignments
+PulseNet_proteomes_epitope_homology_otbksrc_counts_by_otbksrc_stats %>%
+  filter(Cmplt_Homology_Algnmt_Perct >=90) %>%
+  nrow()
+#8
+
+#Send to Excel
+clipr::write_clip(PulseNet_proteomes_epitope_homology_otbksrc_counts_by_otbksrc_stats)
+#Supplementary Table 14
+
+#####Epitope by Isolation Source Graphics#####
+
+#Make a longer version of the original dataframe for graphics
+PulseNet_proteomes_epitope_homology_otbksrc_summary_graphics <-
+  PulseNet_proteomes_epitope_homology_otbksrc_summary %>%
+  pivot_longer(cols = -c(Unique_Id, Short_Unique_Id, Identity, MHC_Type, Pos), names_to = "Summarized.outbreak.source", values_to = "Complete_Homology")
+
+#Make the dataframes have Short_Unique_Id in this order as a factor
+PulseNet_proteomes_epitope_homology_otbksrc_summary_graphics$Short_Unique_Id <-
+  factor(PulseNet_proteomes_epitope_homology_otbksrc_summary_graphics$Short_Unique_Id,
+         levels = Short_Unique_Id_cmplt_hmlgy_desc_order)
+
+#Merge to get original isolation source verbiage
+PulseNet_proteomes_epitope_homology_otbksrc_summary_graphics <-
+  merge(PulseNet_proteomes_epitope_homology_otbksrc_summary_graphics, 
+        PulseNet_All_summ_CheckM_Pass_by_otbksrc)
+
+
+####Epitope Complete Homology by PulseNet Outbreak Source Heatmap - Figure 8####
+epitope_by_otbksrc_no_100s_text_BLB2_MSM_SMDB_V4 <-
+  #Create the base heatmap
+  ggplot(PulseNet_proteomes_epitope_homology_otbksrc_summary_graphics) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_tile(aes(x = Short.Summarized.outbreak.source, y = Short_Unique_Id, fill = Complete_Homology), color="black") +
+  scale_fill_gradient2(name = "Complete Homology", low = "firebrick", high = "#177BB5", mid = "purple",
+                       na.value = "white", midpoint = 50, limit = c(0, 100)) +
+  ylab("Multiepitope Vaccine Construct Epitope") +
+  xlab("Outbreak Source") +
+  
+  #Add text with numbers over the heatmaps
+  geom_text(filter(PulseNet_proteomes_epitope_homology_otbksrc_summary_graphics, Complete_Homology != 100), 
+            mapping=aes(Short.Summarized.outbreak.source, Short_Unique_Id, label = round(Complete_Homology,2)), color = "white", size = 4, fontface = "bold") +
+  
+  #Add a blank heatmap column to the left of the main heatmap
+  new_scale_fill() +
+  geom_tile(data=MEVC_Epitope_Type_Blank, 
+            aes(x=0.45, y=Short_Unique_Id, fill = Epitope_Type, width=0.1)) + 
+  scale_fill_manual(labels = sort(unique(MEVC_Epitope_Type_Blank$Epitope_Type)), 
+                    values = rep("white", length(unique(MEVC_Epitope_Type_Blank$Epitope_Type))),
+                    guide="none") +
+  
+  #Add a heatmap column designating the Epitope Type to left of blank column
+  new_scale_fill() +
+  geom_tile(data=MEVC_Epitope_Type_Colors_ERB, 
+            aes(x=0.25, y=Short_Unique_Id, fill = Epitope_Type, width=0.2), color="black") + 
+  scale_fill_manual("Epitope Type", labels = sort(unique(MEVC_Epitope_Type_Colors_ERB$Epitope_Type)), 
+                    values = unique(arrange(MEVC_Epitope_Type_Colors_ERB, Epitope_Type)$y_epitope_type_colors)) +
+  theme(axis.text=element_markdown(size=13, color="black", face = "bold"), 
+        axis.title=element_text(size=15, face = "bold"), 
+        legend.text=element_text(size=11, face = "bold"), 
+        legend.key.size = unit(0.7,"cm"), legend.title=element_text(size=13, face = "bold")) 
+
+epitope_by_otbksrc_no_100s_text_BLB2_MSM_SMDB_V4
+
+ggsave("C:/Users/David.Bradshaw/OneDrive - USDA/Documents/Manuscripts/UK1_Reverse_Vaccinology/Figures/Figure_9_PulseNet_proteome_epitope_homology_by_otbk_src_heatmap V4.tiff",
+       epitope_by_otbksrc_no_100s_text_BLB2_MSM_SMDB_V4, 
+       device = "tiff", width = 12, height = 8, dpi = 300)
+

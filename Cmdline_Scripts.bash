@@ -52,7 +52,7 @@
 #Have fun doing this a for all proteins
 
 ##Manipulating the Results for Easier Reading and Manipulation
-#Copy the results over to an Excel file label tab "Vaxign2 Raw Results"
+#Copy the results over to an Excel file label tab "Vaxign2 Raw Results" - Supplementary Table 2
 #Create a new tab, "Edited Vaxign2 Results" and copy over the raw results (make new tabs for each new step/filter below)
 #Split the Localization(Probability) column into Localization and Localization Probability columns
 #Did it in Excel via using "(" as the deliminator and removing extra bits from each columns (spaces, "Prob.=", and ")") via Ctrl + H
@@ -65,8 +65,8 @@
 #Change rest of column names to being R friendly by adding "." or "_" instead of spaces
 
 ##Filtering Results
-#You can do this via Excel pretty easily, but R code version is in Clean_Up.R (good way to just double check as well)
-#If using R save the Edited Vaxign2 Results as Full_UK1_Vaxign2_Results.txt (SP_Output_1)
+#You can do this via Excel pretty easily, but R code version is in Clean_Up.R (good way to just double check as well) - Supplementary Table 2
+#If using R save the Edited Vaxign2 Results as Full_UK1_Vaxign2_Results.txt
 #Refer back to this file when prompted by the Clean_Up.R file
 
 ###Get Additional Annotations from Similar Salmonella Proteins
@@ -74,8 +74,8 @@
 #The GenBank verion of UK1 is lacking in gene annotations, and Vaxign2 does not seem to recognize gene names
 #Want to make a more informative table with original and additional annotations
 
-#Copy just the Protein Accessions from the Excel and save in a separte tab-deliminated file (We used Notepad++)
-#Name this file UK1_Ptn_Acc.txt (SP_Output_2)
+#Copy just the Protein Accessions from the Excel and save in a separte tab-deliminated file (We used Notepad++) - Supplementary Table 2
+#Name this file UK1_Ptn_Acc.txt
 
 #Log into SCINet and install and setup Miniconda
 
@@ -124,15 +124,15 @@ blast_formatter -archive UK1_ReAnno_archive_<date>.txt -outfmt "6 qaccver saccve
 scp david.bradshaw@ceres.scinet.usda.gov:/project/fsepru113/dbradshaw/reverse_vaccinology/UK1_ReAnno/* .
 
 #Outputs
-#SP_Output_3 - UK1_ReAnno_<date>.txt
-#SP_Output_4 - UK1_ReAnno_archive_<date>.txt
-#SP_Output_5 - UK1_ReAnno_tabular_<date>.txt
+#UK1_ReAnno_<date>.txt
+#UK1_ReAnno_archive_<date>.txt
+#UK1_ReAnno_tabular_<date>.txt
 
 
 #Open up UK1_ReAnno_tabular_<date>.txt in Excel, add the blast output names (qaccver, etc...) as column names, and replace any "N/A" in the stitle column with none [none] to help with filtering later
 #Use Text to Columns on stitle column and deliminator [ to remove the Salmonella information, delete the subsequent taxonomic columns
 #Make sure no extra bits are leftover i.e serovars with [ in name leading to extra columns
-#Save as UK1_ReAnno_tabular_<date>_edited.txt (SP_Output_6)
+#Save as UK1_ReAnno_tabular_<date>_edited.txt
 
 #Upload into R to get gene names for the first subject Salmonella proteins with >98% identity or the first 500 hits to the query proteins
 
@@ -152,23 +152,23 @@ scp david.bradshaw@ceres.scinet.usda.gov:/project/fsepru113/dbradshaw/reverse_va
 
 #Remove any proteins subsequently labled Plasmid or Flagellar
 
-#Importing information from Excel...
-###Non-flagellar, -LPS, and -plasmid UK1 Proteins = 167###
+#Importing information from Excel... - Supplementary Table 2
+###Non-flagellar, -LPS, and -plasmid UK1 Proteins = 166###
 
 ###Vaxijen Analysis
 
 #Hope that went well for you, now onto antigenicity testing
 
 #Use NCBI Genome Download to get fastas for all remaining proteins
-#Save remaining GenBank protein accessions (n=167) as txt file (SP_Output_7) using nano
+#Save remaining GenBank protein accessions (n=167) as txt file using nano
 nano Pre_VaxiJen_UKI_GenBank_Proteins_Accessions.txt
 
 #Run edirect targeting the protein database and saving the resulting fasta files
 conda activate ncbi_edirect
 cat Pre_VaxiJen_UKI_GenBank_Proteins_Accessions.txt | epost -db protein -format acc | efetch -format fasta > Pre_VaxiJen_UKI_GenBank_Proteins.fasta
 
-#Run the resulting fasta file (SP_Output_8) in VaxiJen with threshold 0.5 and Summary Mode
-#Copy and paste to Excel then sort based upon that column to remove spaces
+#Run the resulting fasta file in VaxiJen with threshold 0.5 and Summary Mode
+#Copy and paste to Excel then sort based upon that column to remove spaces - Supplementary Table 2
 
 #Removed extra information with Text to Column Fixed Width option if that seems ike it will work, beware of cutting stuff you need though
 
@@ -221,13 +221,13 @@ cat Pre_VaxiJen_UKI_GenBank_Proteins_Accessions.txt | epost -db protein -format 
 mkdir UK1_Protein_Blasting
 cd UK1_Protein_Blasting
 
-#open up a new .txt file (SP_Output_9) and copy over GenBank Protein Accessions (n=127)
+#open up a new .txt file and copy over GenBank Protein Accessions (n=127)
 nano Post_VaxiJen_UK1_Protein_Accessions.txt
 
-#In SCINet, open up a new .sh file with the target species name (SP_Output_Batch_1)
+#In SCINet, open up a new .sh file with the target species name
 nano <species_name>_protein_negatve_blasting.sh
 
-#In Notepad++, Open Draft_Negative_Homology_Protein_Blasting.sh (SP_Draft_Script_1) and use Ctrl + H to replace the species with the one you want to run
+#In Notepad++, Open Draft_Negative_Homology_Protein_Blasting.sh and use Ctrl + H to replace the species with the one you want to run
 #Change the query in the blastp script as necessary as well
 #Copy and paste over that information into your blank .sh file on SCINet
 
@@ -259,14 +259,14 @@ sbatch <species_name>_protein_negatve_blasting.sh
 #Enteritidis - 070323 - 4,241,000 NCBI Proteins
 #https://www.ncbi.nlm.nih.gov/datasets/taxonomy/149539/
 
-#In SCINet, open up a new .sh file with the target species name (SP_Output_Batch_4)
+#In SCINet, open up a new .sh file with the target species name
 nano <species_name>_protein_negatve_blasting.sh
 
-#In Notepad++, Open Draft_Positive_Homology_Protein_Blasting.sh (SP_Draft_Script_2) and use Ctrl + H to replace the species with the one you want to run
+#In Notepad++, Open Draft_Positive_Homology_Protein_Blasting.sh and use Ctrl + H to replace the species with the one you want to run
 #Change the query in the blastp script as necessary as well
 #Copy and paste over that information into your blank .sh file on SCINet
 
-#Run the .sh file in a separate instances (SP_Output_Batch_5 & 6)
+#Run the .sh file in a separate instances
 sbatch <species_name>_protein_negatve_blasting.sh
 
 ###Getting Protein Blasting information down to computer
@@ -274,11 +274,11 @@ sbatch <species_name>_protein_negatve_blasting.sh
 scp david.bradshaw@ceres.scinet.usda.gov:/project/fsepru113/dbradshaw/reverse_vaccinology/UK1_Protein_Blasting/*
 #Delete what you believe you do not need (the stdout and stderr likely won't have much info for instance)
 
-#Move over to R to upload all these files and then combine them with Post VaxiJen results in Excel
+#Move over to R to upload all these files and then combine them with Post VaxiJen results in Excel - Supplementary Table 2
 
 #...
 
-#Importing information from Excel/R...
+#Importing information from Excel/R... - Supplementary Table 2
 ###Non-Similar to Hosts Proteins = 110###
 ###Similar to Other Salmonella Serovar Proteins = 101###
 
@@ -294,10 +294,10 @@ scp david.bradshaw@ceres.scinet.usda.gov:/project/fsepru113/dbradshaw/reverse_va
 #Make a new directory 
 mkdir Phase_II_Epitope_Discovery
 
-#Copy and paste remaining protein accession numbers in a txt file using nano (ED_Output_1)
+#Copy and paste remaining protein accession numbers in a txt file using nano
 nano Post_Filtering_UK1_Protein_Accessions.txt 
 
-#Download fasta for each of the remaining proteins (ED_Output_2)
+#Download fasta for each of the remaining proteins
 epost -input Post_Filtering_UK1_Protein_Accessions.txt -db protein | efetch -format fasta > Post_Filtering_UK1.fasta
 
 #Upload this fasta into NetMHCIpan for CTL/CD4/MHCI epitopes, NetMHCIIpan for HTL/CD8/MHCII epitopes, and BepiPred for LBL epitopes
@@ -333,7 +333,7 @@ epost -input Post_Filtering_UK1_Protein_Accessions.txt -db protein | efetch -for
 
 #...
 
-#Importing information from Excel...
+#Importing information from Excel...- Supplementary Table 5
 ###885 Non-Unique MHCI Epitopes###
 
 #...
@@ -362,7 +362,7 @@ epost -input Post_Filtering_UK1_Protein_Accessions.txt -db protein | efetch -for
 
 #...
 
-#Importing information from Excel...
+#Importing information from Excel...- Supplementary Table 5
 ###855 Non-Unique MHCII Epitopes###
 
 #...
@@ -378,7 +378,7 @@ epost -input Post_Filtering_UK1_Protein_Accessions.txt -db protein | efetch -for
 
 #...
 
-#Importing information from Excel...
+#Importing information from Excel...- Supplementary Table 5
 ###396 Non-Unique Immunogenic MHCI Epitopes###
 
 #...
@@ -409,7 +409,7 @@ nano Pre_VaxiJen_UKI_MHCII_Epitope_Peptides.txt
 
 #...
 
-#Importing information from Excel...
+#Importing information from Excel...- Supplementary Table 5
 ###210 Non-Unique MHCI Antigenic Epitopes###
 
 #...
@@ -422,7 +422,7 @@ nano Pre_VaxiJen_UKI_MHCII_Epitope_Peptides.txt
 
 #...
 
-#Importing information from Excel...
+#Importing information from Excel...- Supplementary Table 5
 ###446 Non-Unique MHCII Antigenic Epitopes###
 
 #...
@@ -436,7 +436,7 @@ nano Pre_VaxiJen_UKI_MHCII_Epitope_Peptides.txt
 
 #...
 
-#Importing information from Excel...
+#Importing information from Excel...- Supplementary Table 5
 ###210 Non-Unique MHCI Non-Toxic Epitopes###
 ###440 Non-Unique MHCII NOn-Toxic Epitopes###
 
@@ -449,7 +449,7 @@ nano Pre_VaxiJen_UKI_MHCII_Epitope_Peptides.txt
 
 #...
 
-#Importing information from Excel...
+#Importing information from Excel...- Supplementary Table 5
 ###132 Non-Unique MHCI Hydrophilic Epitopes###
 ###394 Non-Unique MHCII Hydrophilic Epitopes###
 
@@ -459,15 +459,15 @@ nano Pre_VaxiJen_UKI_MHCII_Epitope_Peptides.txt
 
 #Since this blasting will be a combination of MHCI and MHCII epitopes and we are going to need this data anyways for BepiPred, save the Pre Positive Homology Results as tab-deliminated txts and upload into R
 #Outputs
-#ED_Output_9 - Pre_Positive_Homology_UK1_MHCII_Results.txt
-#ED_Output_10 - Pre_Positive_Homology_UK1_MHCI_Results.txt
-#ED_Output_11 - Pre_Positive_Homology_UKI_MHCI_Epitopes.fasta
-#ED_Output_12 - Pre_Positive_Homology_UKI_MHCII_Epitopes.fasta
+#Pre_Positive_Homology_UK1_MHCII_Results.txt
+#Pre_Positive_Homology_UK1_MHCI_Results.txt
+#Pre_Positive_Homology_UKI_MHCI_Epitopes.fasta
+#Pre_Positive_Homology_UKI_MHCII_Epitopes.fasta
 
 #...
 
 
-#In a local terminal, combine the two fasta into one file (ED_Output_13_
+#In a local terminal, combine the two fasta into one file
 cat Pre_Positive_Homology_UKI_MHCI_Epitopes.fasta Pre_Positive_Homology_UKI_MHCII_Epitopes.fasta > Pre_Positive_Homology_UKI_Epitopes.fasta
 
 #Go to SCINet and add a folder to the reverse_vaccinology directory and go into it
@@ -491,7 +491,7 @@ mkdir <serovar>_faas
 #Move/Copy the Pre_Positive_Homology_UK1_Epitopes.fasta file to each serovar's working directory
 cp Pre_Positive_Homology_UKI_Epitopes.fasta <serovar>_faas
 
-#After cding into into each serovar's directory, make a list of all of the possible urls that could be downloaded (ED_Output_Batch_1)
+#After cding into into each serovar's directory, make a list of all of the possible urls that could be downloaded
 esearch -db assembly -query txid192955[organism:exp] | esummary   | xtract -pattern DocumentSummary -element FtpPath_GenBank   | while read -r url ; do      path=$(echo $url | perl -pe 's/(GC[FA]_\d+.*)/\1\/\1_protein.faa.gz/g') ; echo $path ; done > Kentucky_urls.txt
 
 #Determine and record what that number is
@@ -906,11 +906,11 @@ mv std* Infantis_faas/epitope_blasting_summaries_Step_2_stds
 #<serovar>_proteomes_epitope_homology.txt
 #Delete what you believe you do not need (the stdout and stderr likely won't have much info for instance)
 
-#Head over to R for summarization of the number of epitopes with 100% identity with varying percentages of proteomes per serovar
+#Head over to R for summarization of the number of epitopes with 100% identity with varying percentages of proteomes per serovar - Supplementary Table 3
 
 #...
 
-#Importing information from R & Excel...
+#Importing information from R & Excel...- Supplementary Table 5
 ###69 Non-Unique MHCI with 100% Identity to 99% of All Serovars' Proteomes###
 ###216 Non-Unique MHCII with 100% Identity to 99% of All Serovars' Proteomes###
 
@@ -932,14 +932,14 @@ mv std* Infantis_faas/epitope_blasting_summaries_Step_2_stds
 ##Post-Processing:
 #Click "Download bebipred3 results (zip)"
 #Extract out the raw_output
-#Combine all results onto one Excel sheet in epitope summary excel
+#Combine all results onto one Excel sheet in epitope summary Excel- Supplementary Table 3
 #Remove the extra bits in the Accession column by replacing .1 with .1^ and then using Text to Column to separate by ^
 #Relabel columns to the following: Accession, Residue, Score, Rolling.Mean.Score
 #Save this sheet as its own tab-deliminated txt file -> BepiPred_Raw_Results.txt
 
 #Head over to R for lots of loops and branching filtering of epitopes and then finding unqiue epitopes
 
-###BepiPred Linear B-Cell Epitope Identification
+###BepiPred Linear B-Cell Epitope Identification - Supplementary Table 3
 
 #...
 
@@ -947,7 +947,7 @@ mv std* Infantis_faas/epitope_blasting_summaries_Step_2_stds
 
 #...
 
-#Importing information from R...
+#Importing information from R...Table 1
 ###42 Unique MHCI with 100% Identity to 99% of All Serovars' Proteomes###
 ###126 Unique MHCII with 100% Identity to 99% of All Serovars' Proteomes###
 
@@ -986,7 +986,7 @@ mv std* Infantis_faas/epitope_blasting_summaries_Step_2_stds
 
 #...
 
-#Importing information from Excel...
+#Importing information from Excel...- Supplementary Table 5
 ###41 Unique, Nonoverlapping MHCI with 100% Identity to 99% of All Serovars' Proteomes###
 ###52 Unique, Nonoverlapping MHCII with 100% Identity to 99% of All Serovars' Proteomes###
 
@@ -1013,7 +1013,7 @@ mv std* Infantis_faas/epitope_blasting_summaries_Step_2_stds
 
 ###Multiepitope Construct - Most Antigenic Epitopes (9) Localization Agnostic x MHC Type Design
 
-#Importing information from R and Excel...
+#Importing information from R and Excel...- Table 2
 
 ###Poultry Linkers Epitope Region - 441 aa ###
 ###EAAAKIEGEDMRLAAAYGEDRRTLNVAAYTEREGKAAAAAYKEDNELREAAAYSEADVQGHVAAYYEYNFRTAYAAYYEKTDNTRMAAYKDKAFDVKLAAYKETGERLSIGPGPGASGDLTVEVKESDGSGPGPGAQKLAIEIRDGDQRRGPGPGRAGYRADVKNNDSNVGPGPGLHYFSDDKGSDGDQTGPGPGQNIAVVRRADGSGTSGPGPGHWEITNTFRYRINEHGPGPGTPGLRFDHHSIVGDNGPGPGQGNPVTGTDKQAVSPGPGPGTALTFSRDGKTQDKNKKLENEFKGRAKKTWHARFAYDKEKTDRKKKRPFAGNTGTVDDKDKKAAYSNSKRTNDQQDRKKSRGNYRYTDKDLVKYKKARYRFEYVRRSSDIRKKSDGTKINYANKVINNKKDERVALREAKKAENATTDKAKKKERIAEKGAEAAAK###
@@ -1080,6 +1080,8 @@ mv std* Infantis_faas/epitope_blasting_summaries_Step_2_stds
 #PSIPRED v4.0
 #Copy protein sequence (no > line) separately
 #http://bioinf.cs.ucl.ac.uk/psipred/
+#Download and save Image
+#Supplementary Figure 1
 
 #Summarizing predictions
 #Save the PNG of the Sequence Plot for Supplementary/Manuscript Figures
@@ -1088,7 +1090,7 @@ mv std* Infantis_faas/epitope_blasting_summaries_Step_2_stds
 #Use Countif in cell next to each unique secondary structure type to test the same range for the occurances of that secondary structure Type
 #Next to the Countif column make the percentage Column
 #Save the SS2 format as an Excel file
-#Copy and paste summary to Phase IV Excel
+#Copy and paste summary to Excel
 
 ##Tertiary Structure Prediction
 #Phyre2
@@ -1111,70 +1113,31 @@ mv std* Infantis_faas/epitope_blasting_summaries_Step_2_stds
 #Ties are given the same better number
 #Find the sum of all three values for all five models, and choose the lowest sum
 #Ties go to model with lowest MolProbity Score
+#Table 3
 
-##Tertiary Structure Validation
+##Tertiary Structure Validation - Table 4
 
-#PDBSum
+##PDBSum
 #Upload original Phyre2 and GalaxyRefine chosen refined model separately
-#Download the PROCHECK Figure and print to save as pdf the results pages
+#Download the PROCHECK Figure and print to save as pdf the results pages - Supplementary Figures 3C and 3D
 
+##ERRAT, VERIFY3D, PROCHECK
 #https://saves.mbi.ucla.edu/
 #ProSA-Web
 #Upload original Phyre2 and GalaxyRefine chosen refined model separately
+#Save resulting graphic - Supplementary Figures 3E and 3F
 
-##CBL prediction
-#ElliPro
-#Upload chosen refined model 
-##Molecular Docking
+####Molecular Docking####
 
 
-##Molecular Docking Residue Interactions Validation
+##Molecular Docking Residue Interactions- Reference
 
-#Search for your reference files in the PDBsum section (e.g. 3v47 - zebrafish TLR5 homodimer with flagellin)
-#Once there click on the Interface Summary or Summaries you are interested on the left side (e.g. A-C, B-C, A-D, B-D for 3v47)
+#Search for your reference files in the PDBsum section (e.g. 2Z7X - Crystal structure of the TLR1-TLR2 heterodimer induced by binding of a tri-acylated lipopeptide)
+#Once there click on the Interface Summary or Summaries you are interested on the left side (e.g. A-C and B-C for 2Z7X)
 #Then scroll down to the "Residue interactions across interface" and open the "List of interactions" in a new tab
 #Copy and paste all of this to a new txt file and save it with a unique Name
 
-#3v47-Flagellins
-#Create total interactions residues list for each chain in the reference
-grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 3v47_TLR5_Complex_Chains_A_C_Interactions.txt | while read p; do echo $p; done | cut -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 3v47_TLR5_Complex_Chains_A_C_Interactions_A_Residues.txt
-grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 3v47_TLR5_Complex_Chains_A_D_Interactions.txt  | while read p; do echo $p; done | cut -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 3v47_TLR5_Complex_Chains_A_D_Interactions_A_Residues.txt
-grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 3v47_TLR5_Complex_Chains_B_C_Interactions.txt  | while read p; do echo $p; done | cut -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 3v47_TLR5_Complex_Chains_B_C_Interactions_A_Residues.txt
-grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 3v47_TLR5_Complex_Chains_B_D_Interactions.txt  | while read p; do echo $p; done | cut -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 3v47_TLR5_Complex_Chains_B_D_Interactions_A_Residues.txt
-
-#Create total interactions residues list for each chain in the reference
-grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 3v47_TLR5_Complex_Chains_A_C_Interactions.txt  | while read p; do echo $p; done > 3v47_TLR5_Complex_Chains_A_C_Interactions_Only_SS.txt
-mapfile -t my_array < <( grep -n "^1. " 3v47_TLR5_Complex_Chains_A_C_Interactions_Only_SS.txt | cut -f1 -d: )
-if [ ${#my_array[@]} == 3 ]; then rm1="${my_array[1]}"; rm2=$(echo "${my_array[2]}"-1 |bc); sed -e "$rm1,$rm2"'d' 3v47_TLR5_Complex_Chains_A_C_Interactions_Only_SS.txt > 3v47_TLR5_Complex_Chains_A_C_Bonds_Only_SS.txt; else rm1="${my_array[1]}"; sed -e "$rm1,$"'d' 3v47_TLR5_Complex_Chains_A_C_Interactions_Only_SS.txt > 3v47_TLR5_Complex_Chains_A_C_Bonds_Only_SS.txt; fi
-cut 3v47_TLR5_Complex_Chains_A_C_Bonds_Only_SS.txt -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 3v47_TLR5_Complex_Chains_A_C_Bonds_A_Residues.txt
-
-grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 3v47_TLR5_Complex_Chains_A_D_Interactions.txt  | while read p; do echo $p; done > 3v47_TLR5_Complex_Chains_A_D_Interactions_Only_SS.txt
-mapfile -t my_array < <( grep -n "^1. " 3v47_TLR5_Complex_Chains_A_D_Interactions_Only_SS.txt | cut -f1 -d: )
-if [ ${#my_array[@]} == 3 ]; then rm1="${my_array[1]}"; rm2=$(echo "${my_array[2]}"-1 |bc); sed -e "$rm1,$rm2"'d' 3v47_TLR5_Complex_Chains_A_D_Interactions_Only_SS.txt > 3v47_TLR5_Complex_Chains_A_D_Bonds_Only_SS.txt; else rm1="${my_array[1]}"; sed -e "$rm1,$"'d' 3v47_TLR5_Complex_Chains_A_D_Interactions_Only_SS.txt > 3v47_TLR5_Complex_Chains_A_D_Bonds_Only_SS.txt; fi
-cut 3v47_TLR5_Complex_Chains_A_D_Bonds_Only_SS.txt -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 3v47_TLR5_Complex_Chains_A_D_Bonds_A_Residues.txt
-
-grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 3v47_TLR5_Complex_Chains_B_C_Interactions.txt  | while read p; do echo $p; done > 3v47_TLR5_Complex_Chains_B_C_Interactions_Only_SS.txt
-mapfile -t my_array < <( grep -n "^1. " 3v47_TLR5_Complex_Chains_B_C_Interactions_Only_SS.txt | cut -f1 -d: )
-if [ ${#my_array[@]} == 3 ]; then rm1="${my_array[1]}"; rm2=$(echo "${my_array[2]}"-1 |bc); sed -e "$rm1,$rm2"'d' 3v47_TLR5_Complex_Chains_B_C_Interactions_Only_SS.txt > 3v47_TLR5_Complex_Chains_B_C_Bonds_Only_SS.txt; else rm1="${my_array[1]}"; sed -e "$rm1,$"'d' 3v47_TLR5_Complex_Chains_B_C_Interactions_Only_SS.txt > 3v47_TLR5_Complex_Chains_B_C_Bonds_Only_SS.txt; fi
-cut 3v47_TLR5_Complex_Chains_B_C_Bonds_Only_SS.txt -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 3v47_TLR5_Complex_Chains_B_C_Bonds_B_Residues.txt
-
-grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 3v47_TLR5_Complex_Chains_B_D_Interactions.txt  | while read p; do echo $p; done > 3v47_TLR5_Complex_Chains_B_D_Interactions_Only_SS.txt
-mapfile -t my_array < <( grep -n "^1. " 3v47_TLR5_Complex_Chains_B_D_Interactions_Only_SS.txt | cut -f1 -d: )
-if [ ${#my_array[@]} == 3 ]; then rm1="${my_array[1]}"; rm2=$(echo "${my_array[2]}"-1 |bc); sed -e "$rm1,$rm2"'d' 3v47_TLR5_Complex_Chains_B_D_Interactions_Only_SS.txt > 3v47_TLR5_Complex_Chains_B_D_Bonds_Only_SS.txt; else rm1="${my_array[1]}"; sed -e "$rm1,$"'d' 3v47_TLR5_Complex_Chains_B_D_Interactions_Only_SS.txt > 3v47_TLR5_Complex_Chains_B_D_Bonds_Only_SS.txt; fi
-cut 3v47_TLR5_Complex_Chains_B_D_Bonds_Only_SS.txt -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 3v47_TLR5_Complex_Chains_B_D_Bonds_B_Residues.txt
-
-#Phantom script to reset Notepad++ $ for coloring
-sed -e "$rm1,$w"'d'
-
-#Combine the results into a per chain list (A or B) for bonds and interactions 
-cat 3v47_TLR5_Complex_Chains_A_C_Bonds_A_Residues.txt 3v47_TLR5_Complex_Chains_A_D_Bonds_A_Residues.txt | sort > 3v47_TLR5_Complex_Bonds_Chain_A_Residues.txt
-cat 3v47_TLR5_Complex_Chains_A_C_Interactions_A_Residues.txt 3v47_TLR5_Complex_Chains_A_D_Interactions_A_Residues.txt | sort > 3v47_TLR5_Complex_Interactions_Chain_A_Residues.txt
-
-
-cat 3v47_TLR5_Complex_Chains_B_C_Bonds_B_Residues.txt 3v47_TLR5_Complex_Chains_B_D_Bonds_B_Residues.txt | sort > 3v47_TLR5_Complex_Bonds_Chain_B_Residues.txt
-cat 3v47_TLR5_Complex_Chains_B_C_Interactions_B_Residues.txt 3v47_TLR5_Complex_Chains_B_D_Interactions_B_Residues.txt | sort > 3v47_TLR5_Complex_Interactions_Chain_B_Residues.txt
-
-#2z7z-Ligand
+#2Z7X-Ligand
 #Create total interactions residues list for ligand to the reference
 grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 2z7x_TLR1_2_Complex_Ligand_Interactions.txt | while read p; do echo $p; done | cut -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 2z7x_TLR1_2_Complex_Ligand_Interactions_All_Residues.txt
 
@@ -1196,47 +1159,80 @@ sed -e "$rm1,$w"'d'
 grep A 2z7x_TLR1_2_Complex_Ligand_Bonds_All_Residues.txt > 2z7x_TLR1_2_Complex_Ligand_Bonds_A_Residues.txt
 grep B 2z7x_TLR1_2_Complex_Ligand_Bonds_All_Residues.txt > 2z7x_TLR1_2_Complex_Ligand_Bonds_B_Residues.txt
 
+#Many of the interactions in the 2Z7X model between the full try-acytelated lipoprotein were not between chains, thus need to click the Ligands tab in PDBsum to find and copy all interactions
 
-#Download the top 30 pdb files from ClusPro and unzip them
+#Extract TLR1/2 interaction residue positions from a ligand file
+grep -e "^[0-9]" -e "^ [0-9]" -e "^  [0-9]" 2z7x_TLR1_TLR2_Complex_PCJ_Interactions.txt | while read p; do echo $p; done | cut -f 5,6 -d ' ' | sed 's/ //g' | sort | uniq > 2z7x_TLR1_TLR2_Complex_PCJ_Residues.txt
+
+
+###MEVC vs TLR1/2 Heterodimer Interactions - Background Information - Supplementary Table 7
+
+#Selcting a docking model with incorporation of biological relevance tequired two steps in the pipeline:
+#Starting from the model from the cluster with the most members, per ClusPro's seleciton recommendations, and moving down the list from there,
+#(1) The model must have interactions with both Chain A (TLR2) and Chain B (TLR1) (PDBsum)
+#(2) If it does, then the model must visually bind to the same general region the refernce ligand binds the reference TLR complex (ChimeraX)
+#Open chosen model in ChimeraX - see below for scripts - Figure 4A
+#Save Interaction figures from PDBsum for selected model - Figures 4B and 4C 
+#Save interaction data from PDBsum from selected model - Supplementary Table 8
+
+#Below code is a way to assess multiple files PDBsum interaciton files at once, but applicaiton of the above pipeline was meant to be be done one at a time
+#Code is here because it can be helpful for assessing specific interactions, which was outside the scope of this pipeline
+#Note that interactions note in the original crystal structure manuscript may not necessarily match those found by PDBsum, proceed with caution when assessing specific residue interactions
+
+#Download the top all pdb files from ClusPro and unzip them
 
 #Use rename to add a unique identifier to the beginning of the file ffr
-rename 's/model/TLR5_Homodimer_Any_Loc_Refine_Balanced_ClusPro_Model/' *.pdb
+rename 's/model/TLR_1_2_Heterodimer_MEVC_Only_Refine_Balanced_ClusPro_Model/' *.pdb
 
-#Upload each of the top 10 structures to the Generate tool of PDBSum and input Email
+#Make a directory to hold PDBsum interactions
+mkdir 2z7x_TLR1_2_Complex_MEVC_Interactions
+
+#Upload each of the top structures to the Generate tool of PDBSum and input Email
 #Once you get the email with the results, open it and move to the Prot-prot tab
 #Once there click on the Interface Summary or Summaries you are interested on the left side
 #Then scroll down to the "Residue interactions across interface" and open the "List of interactions" in a new tab
 #Copy and paste all of this to a new txt file and save it with a unique Name
-#Move everything to a new folder
+#Move everything to 2z7x_TLR1_2_Complex_MEVC_Interactions
+
 
 #Make a uniquely named file to hold docking percentages and add column names
-echo "TLR_Construct_Model" "Chain_A_Interactions_Percentage" "Chain_B_Interactions_Percentage" > 3v47_TLR5_Complex_Any_Loc_Docking_Percentages.txt
+cd 2z7x_TLR1_2_Complex_MEVC_Interactions
+echo "TLR_Construct_Model" "Query_Chain_A_Total_Interactions_Count" "Query_Chain_A_Overlapping_Interactions_Count" "Chain_A_Residue_Interactions_Count" "Chain_A_Interactions_Percentage" "Query_Chain_B_Total_Interactions_Count" "Query_Chain_B_Overlapping_Interactions_Count" "Chain_B_Residue_Interactions_Count" "Chain_B_Interactions_Percentage" > 2z7x_TLR1_2_Complex_MEVC_Docking_Percentages_V3.txt
 
 #Edit the draft_summarizing_pdbsum_interactions to your needs and copy over to terminal to run
 
 #Copy the Total interactions to folder focused on A Chain bonds and rename them
+mkdir Chain_A_Bonds
+cp 2z7x_TLR1_2_Complex_MEVC_*_Interactions.txt Chain_A_Bonds
+cd Chain_A_Bonds
 rename 's/Interactions/Chain_A_Bonds/' *.txt
 
 #Remove any B Chain and non-bonded data
 
 #Make a uniquely named file to hold docking percentages and add column names
-echo "TLR_Construct_Model" "Chain_A_Bonds_Percentage" > 3v47_TLR5_Complex_Any_Loc_Chain_A_Bond_Docking_Percentages.txt
+echo "TLR_Construct_Model" "Query_Chain_A_Total_Bond_Count" "Query_Chain_A_Overlapping_Bond_Count" "Chain_A_Bond_Residue_Count" "Chain_A_Bonds_Percentage" > 2z7x_TLR1_2_Complex_MEVC_Chain_A_Bond_Docking_V3.txt
 
 #Edit the draft_chain_x_pdsum_bonds.sh to your needs and copy over to terminal to run 
 
 #Copy the Total interactions to folder focused on B Chain bonds and rename them
+mkdir Chain_B_Bonds
+cp 2z7x_TLR1_2_Complex_MEVC_*_Interactions.txt Chain_B_Bonds
+cd Chain_B_Bonds
 rename 's/Interactions/Chain_B_Bonds/' *.txt
 
 #Remove any A Chain and non-bonded data
 
 #Make a uniquely named file to hold docking percentages and add column names
-echo "TLR_Construct_Model" "Chain_B_Bonds_Percentage" > 3v47_TLR5_Complex_Any_Loc_Chain_B_Bond_Docking_Percentages.txt
+echo "TLR_Construct_Model" "Query_Chain_B_Bond_Count" "Chain_B_Bond_Residue_Count" "Chain_B_Bonds_Percentage" > 2z7x_TLR1_2_Complex_MEVC_Chain_B_Bond_Docking_V2.txt
+echo "TLR_Construct_Model" "Query_Chain_B_Total_Bond_Count" "Query_Chain_B_Overlapping_Bond_Count" "Chain_B_Bond_Residue_Count" "Chain_B_Bonds_Percentage" > 2z7x_TLR1_2_Complex_MEVC_Chain_B_Bond_Docking_V3.txt
 
 #Edit the draft_chain_x_pdsum_bonds.sh to your needs and copy over to terminal to run 
 
 #Combine all Docking Percentages Data into one Excel file and use to choose the best docking model (i.e. highest percentage of interactions and bonds)
 
-##Molecular Dynamics
+
+
+####Molecular Dynamics####
 
 #Install GROMACS
 #wget ftp://ftp.gromacs.org/gromacs/gromacs-2023.3.tar.gz
@@ -1266,7 +1262,11 @@ source /project/fsepru113/dbradshaw/gromacs-2023.3/bin/GMXRC
 scp *.pdb david.bradshaw@ceres.scinet.usda.gov:/project/fsepru113/dbradshaw/reverse_vaccinology/Molecular_Dynamics/Loc_Indpdt_TLR2
 
 #Open draft_md_pre_production_run.sh and adjust as needed then copy over to HPC and run it
-nano Loc_Indpdt_TLR5_Complex_ClusPro_Model_4_md_pre_production_run.sh
+nano Loc_Indpdt_TLR1_2_Complex_ClusPro_Model_2_md_pre_production_run.sh
+sbatch Loc_Indpdt_TLR1_2_Complex_ClusPro_Model_2_md_pre_production_run.sh
+#Supplementary Table 9
+
+##Recap of scripts from that .sh file are below
 
 #Delete water and ligands from pdb file
 grep -v HETATM TLR2_Any_Loc_Refined_Balanced_ClusPro_model.000.00.pdb > TLR2_Any_clean.pdb
@@ -1341,13 +1341,12 @@ printf "4 4" | gmx rms -f npt.trr -s npt.tpr -o npt_rmsd.xvg
 ##Production Run
 
 #Use a interactive srun script to determine how long analysis will take, change as you troubleshoot the resources
-#srun -N 1 --mem=72gb -c 36 -p short --pty $SHELL
 srun -N 1 --mem=144gb -c 72 -p short --pty $SHELL
 
 #Activate gromacs
 source /project/fsepru113/dbradshaw/gromacs-2023.3/bin/GMXRC
 
-#Use nano to change the nsteps in md.mdp as needed (starting with 10 ns)
+#Use nano to change the nsteps in md.mdp as needed
 nano md.mdp
 
 #Generate a tpr file - < 1 min
@@ -1366,8 +1365,8 @@ rm md.log
 rm md.xtc
 
 #Either adjust your resources and repeat the above or if satisfied adjust draft_md_production_run.sh to match your needs and copy over to new nano .sh file
-nano Loc_Indpdt_TLR2_md_prod_run.sh
-sbatch Loc_Indpdt_TLR2_md_prod_run.sh --no-requeue
+nano Loc_Indpdt_TLR1_2_Model_0_md_prod_run_physio.sh
+sbatch  --no-requeue Loc_Indpdt_TLR1_2_Model_0_md_prod_run_physio.sh
 
 ##Restarting the Run
 
@@ -1378,7 +1377,7 @@ sbatch Loc_Indpdt_TLR2_md_prod_run.sh --no-requeue
 #Adjust the draft_md_production_run.sh to have the following
 gmx mdrun -v -deffnm md -cpi md.cpt
 
-sbatch Loc_Indpdt_TLR2_md_prod_run.sh --no-requeue
+sbatch --no-requeue Loc_Indpdt_TLR1_2_Model_0_md_prod_run_physio.sh 
 
 
 #From https://www.compchems.com/extend-or-continue-a-gromacs-simulation/#continue-a-simulation
@@ -1388,6 +1387,12 @@ sbatch Loc_Indpdt_TLR2_md_prod_run.sh --no-requeue
 #Despite this, different trajectories are all equally valid and none of them is better than the others. So don’t worry about this.
 
 ##Generate graphics
+
+#Either adjust your resources and repeat the above or if satisfied adjust draft_graphics.sh to match your needs and copy over to new nano .sh file
+nano Loc_Indpdt_TLR1_2_Model_0_md_prod_run_physio.sh
+sbatch  --no-requeue Loc_Indpdt_TLR1_2_Model_0_md_prod_run_physio.sh
+
+##Recap of scripts are below
 
 #Generate a graphic for RMSD - < 5 min (10 ns sim)
 #https://www.compchems.com/what-is-the-rmsd-and-how-to-compute-it-with-gromacs/
@@ -1413,13 +1418,15 @@ printf "1" | gmx gyrate -f md.xtc -s md.tpr -o md_gyrate.xvg
 printf "3" | gmx rmsf -f md.xtc -s md.tpr -o md_rmsf.xvg -res
 #Choose 3 to select the C-alpha group
 
-###Codon Optimization
-#JCAT 
+####Codon Optmization####
+
+###Codon Optimization V1
+##JCAT 
 #https://jcat.de
 #Made RE pair choices based upon the multiple cloning site (MCS) of pET-30a vector 
 #Copy the protein sequence of the construct into the input area
 #Choose Protein option
-#Select Escherichia coli (strain K12) in teh dropdown menu below
+#Select Escherichia coli (strain K12) in the dropdown menu below
 #Click "Avoid Clevage Sites of Restriction Enzymes" and choose the enzymes you are testing
 #Tested the following pairs (3' and 5'): XhoI & BamHI, EcoRI & BamHI, and HindIII & BamHI
 #Submit and choose the RE pair with highest CAI (preferably 1.0) or test different pairs based upon availability in the the MCS and support from the literature
@@ -1427,34 +1434,55 @@ printf "3" | gmx rmsf -f md.xtc -s md.tpr -o md_rmsf.xvg -res
 #Record the GC content for the E. coli K12 Strain and the corrected sequence and RE pair you have chosen
 #Copy and paste the sequence to Excel, use Text to Column to remove the sequence from line numbers, remove the white space with Find and Replace, and use then TextJoin formula to concatenate the sequences
 
+###Initial Complexity Assessment
+##IDT gBlocks™ Gene Fragments Entry Tool
+#https://www.idtdna.com/SciTools
+#Copy JCAT optimized sequence into the Sequence section
+#Give it a unique name
+#Click TEST COMPLEXITY button
+#Copy resulting report to Excel (Supplementary Table 10)
+
+###Codon Optimization V2
+##IDT Codon Opmization Tool 
+#https://www.idtdna.com/SciTools
+#Use of the tool requires an (free) account
+#JCAT optimized sequence into the Single Entry section
+#Choose Escherichia coli K12 as the organism
+#Choose BamHI and XhoI as Restriction Sites to Avoid
+#Click OPTIMIZE button
+#Copy resulting report to Excel (Supplementary Table 10)
+
+###Manual Codon Optimization
+##IDT Codon Opmization Tool 
+#https://www.idtdna.com/SciTools
+#Identify complexities for potential improvement from secondary IDT Optimization
+#Click on Manual Optimization button to open new windo for manual Optimization
+#Highlighed codons indicate the one that is currently in the sequence while those that are crossed off are not a possible codon for the organism selected
+#Identify target codons, record the original codon, fraction, position, and amino acide (Supplementary Table 11)
+#Select alternative codons that address complexity while balancing codon fraction occurence; record alternative codon adn fraction (Supplementary Table 11)
+#Close the window an a new complexity calcuation will occur, determine if more changes are needed, if not then record the complexity report in Excel (Supplementary Table 10)
 
 ###In silico cloning
 
 ##Input Files
 #Download the .dna from SnapGene via File -> Open Files
 #https://www.snapgene.com/plasmids/pet_and_duet_vectors_(novagen)/pET-30a(%2B)
-#Copy and paste the codon optimized sequence into Notepad++ and add the restriction enzyme sites (XhoI to N terminal and BamHI to C terminal) to the ends and save the file
+#Copy and paste the final codon optimized sequence into Notepad++ and add the restriction enzyme sites (XhoI to N terminal and BamHI to C terminal) to the ends and save the file
 
 ##Genious
 #Go to Add -> Import Files -> Choose construct fasta file and vector .dna file
-#Check both options for imporing SnapGene Sequence file (Also import enzme sets associated with <vector> & Annotate teh restriction enzymes that were displayed in SnapGene)
+#Check both options for imporing SnapGene Sequence file (Also import enzme sets associated with <vector> & Annotate the restriction enzymes that were displayed in SnapGene)
 #Click both the construct and vector and go to Cloning -> Restriction Cloning
 #Backbone is pET-30a(+) with the BamHI RE site as the 5' end and the XhoI RE site as the 3' ends
-#Insert is the construct with the XhoI RE site as the 5' end and the BamHI RE site as teh 5' end
+#Insert is the construct with the XhoI RE site as the 5' end and the BamHI RE site as the 5' end
 #Click Generate Constructs
 #Click the resulting file and then go to Export -> To Multiple Files, Choose folder, save as a .geneious file
-
-##SnapGene Viewer
-#Go to Open -> find .geneious file and load it in
-#Change the color and name of Construct Insert by double clicking it 
-#While selecting the Construct Insert, right click the DNA Sequence and select Set DNA Color -> Do both bands
-#Right click enzymes used and then select Highlight Enzyme Site
-#Double click name in center to change it to something like  "pET-30a(+) - Codon Optimized Construct Sequence - XhoI BamHI"
-#Use drop down next to Save to Save as the entire file as SnapGene DNA file
-#Use drop down next to Save to Export Map as a TIFF with 300 dpi
+#Change colors and annotate as necessary
+#Click on Export -> Export to Image, and save as construct as an image
+#Supplementary Figure 3
 
 
-###In Silico Immune Trials
+####In Silico Immune Trials####
 #C-ImmSim
 #https://kraken.iac.rm.cnr.it/C-IMMSIM/
 #https://wwwold.iac.rm.cnr.it/~filippo/c-immsim/index.html
@@ -1468,134 +1496,125 @@ printf "3" | gmx rmsf -f md.xtc -s md.tpr -o md_rmsf.xvg -res
 #Injection N. 2 = Time Steop of Injection = 63 (21 x 24 / 8); What to inject: to vaccine (no LPS) & Adjuvant to 100; Num Ag to inject to 100; Copy and paste in protein sequence of Construct
 #Click Submit Job
 #Once finished click on Output, then in the output click Download PDF Report, and save as unique file
+#View the output on the web, click on each figure of interest, and download them
+#Use a program such as GIMP to change dpi to at least 300; use a presentation software to add text to or clarify existing text as needed
+#Figure 6, Supplementary Figures 4 and 5
 
 
 ####ChimeraX####
 #https://www.cgl.ucsf.edu/chimerax/
+
+#Tutorials
 #https://www.youtube.com/playlist?list=PL4eF1KHNgDfIYSKCS3_S0PTRYtYTV9Myi
 #https://www.cgl.ucsf.edu/chimerax/docs/credits.html
 
 #Change information about chains
 #https://www.cgl.ucsf.edu/chimerax/docs/user/commands/changechains.html
 
-###Any Loc Construct - Original
+###2Z7X PDB File Curation###
+
+#Remove Ligand Chain
+delete /C
+
+#Remove solvents
+delete solvent
+
+#Select any leftover molecules
+delete sel
+
+#Save as new pdb file
+save "C:/Users/David.Bradshaw/OneDrive - USDA/Documents/Bioinformatics_Analysis/Salmonella_Rev_Vacc_CRADA/cleaned_up/Phase_IV_Construct_Evaluation/Step_8_Molecular_Docking/2z7x_TLR1_2_Heterodimer_ChimeraX.pdb"
+
+
+###MEVC - Original Phyre2 Tertiary Structure - Figure 3A
 
 ##Add colors to construct based upon region
 #Adjuvant
-color #1/?:1-495 blue
+color #1/?:1-495 #999999
 
 #CTL Region
-color #1/?:496-605 green
+color #1/?:496-605 blue
 
 #Th Region
-color #1/?:606-785 orange
+color #1/?:606-785 red
 
-#LBL Region
-color #1/?:786-936 red
+#DP-LBL Region
+color #1/?:786-936 orange
 
 #Save image
 #https://www.cgl.ucsf.edu/chimerax/docs/user/commands/save.html
 #https://mail.cgl.ucsf.edu/mailman/archives/list/chimerax-users@cgl.ucsf.edu/message/LDM5SPK5HMV67QMEI6ZCKVCR7T7VAKXO/
-save "I:\Bearson\David_Bradshaw\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_3a_Original_Phyre_3D_Structure_V2.tif" width 2100 height 1200 transparentBackground true
+save "C:\Users\David.Bradshaw\OneDrive - USDA\Documents\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_3a_Original_Phyre_3D_Structure_V4.tif" width 2100 height 1200 transparentBackground true
 #Target Size = Height x Width = 2" x 3.5"
 #2 x 2 x 300 dpi = 1200 pixels height
 #3.5 x 2 x 300 dpi = 2100 pixels width
 
 #Save ChimeraX Session
-save "I:\Bearson\David_Bradshaw\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_3a_Original_Phyre_3D_Structure_V2.cxs"
+save "C:\Users\David.Bradshaw\OneDrive - USDA\Documents\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_3a_Original_Phyre_3D_Structure_V4.cxs"
 
-###Any Loc Construct - Refined
+###MEVC - Refined  - Figure 3B
 
 ##Add colors to construct based upon region
 #Adjuvant
-color #1/?:1-495 blue
+color #1/?:1-495 #999999
 
 #CTL Region
-color #1/?:496-605 green
+color #1/?:496-605 blue
 
 #Th Region
-color #1/?:606-785 orange
+color #1/?:606-785 red
 
-#LBL Region
-color #1/?:786-936 red
+#DP-LBL Region
+color #1/?:786-936 orange
 
 #Save image
 #https://www.cgl.ucsf.edu/chimerax/docs/user/commands/save.html
-save "I:\Bearson\David_Bradshaw\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_3b_Refined_Model_4_3D_Structure_V2.tif" width 2100 height 1200 transparentBackground true
+save "C:\Users\David.Bradshaw\OneDrive - USDA\Documents\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_3b_Refined_Model_4_3D_Structure_V4.tif" width 2100 height 1200 transparentBackground true
 #Target Size = Height x Width = 2" x 3.5"
 #2 x 2 x 300 dpi = 1200 pixels height
 #3.5 x 2 x 300 dpi = 2100 pixels width
 
 #Save ChimeraX Session
-save "I:\Bearson\David_Bradshaw\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_3b_Refined_Model_4_3D_Structure_V2.cxs"
+save "C:\Users\David.Bradshaw\OneDrive - USDA\Documents\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_3b_Refined_Model_4_3D_Structure_V4.cxs"
 
-###Any Loc Construct - TLR 1/2
+###MEVC - TLR 1/2 Docking Model 2 - Figure 4A
 
 
 ##Add colors to construct based upon region
 #Adjuvant
-color #1/?:1-495 blue
+color #1/?:1-495 #999999
 
 #CTL Region
-color #1/?:496-605 green
+color #1/?:496-605 blue
 
 #Th Region
-color #1/?:606-785 orange
+color #1/?:606-785 red
 
-#LBL Region
-color #1/?:786-936 red
+#DP-LBL Region
+color #1/?:786-936 orange
+
 
 #Add colors to TLRs by Chain name
-
-#TLR-1
-color /a cyan
 
 #TLR-2
-color /b yellow
+color /a #9225FF
+
+#TLR-1
+color /b green
 
 #Save image
 #https://www.cgl.ucsf.edu/chimerax/docs/user/commands/save.html
-save "I:\Bearson\David_Bradshaw\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_4a_TLR1_2_Heterodimer_Any_Loc_Refined_Balanced_ClusPro_Model_2_V2.tif" width 2100 height 1200 transparentBackground true
+save "C:\Users\David.Bradshaw\OneDrive - USDA\Documents\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_4a_TLR1_2_Heterodimer_Any_Loc_Refined_Balanced_ClusPro_Model_2_V4.tif" width 2100 height 1200 transparentBackground true
 #Target Size = Height x Width = 2" x 3.5"
 #2 x 2 x 300 dpi = 1200 pixels height
 #3.5 x 2 x 300 dpi = 2100 pixels width
 
 #Save ChimeraX Session
-save "I:\Bearson\David_Bradshaw\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_4a_TLR1_2_Heterodimer_Any_Loc_Refined_Balanced_ClusPro_Model_2_V2.cxs"
+save "C:\Users\David.Bradshaw\OneDrive - USDA\Documents\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_4a_TLR1_2_Heterodimer_Any_Loc_Refined_Balanced_ClusPro_Model_2_V4.cxs"
 
-###Any Loc Construct - TLR 5
+#Combine all Docking Percentages Data into one Excel file and use to choose the best docking model (i.e. highest percentage of interactions and bonds)
 
-##Add colors to construct based upon region
-#Adjuvant
-color #1/?:1-495 blue
-
-#CTL Region
-color #1/?:496-605 green
-
-#Th Region
-color #1/?:606-785 orange
-
-#LBL Region
-color #1/?:786-936 red
-
-#Add colors to TLRs by Chain name
-
-#TLR-5A
-color /a pink
-
-#TLR-5B
-color /b violet
-
-#Save image
-#https://www.cgl.ucsf.edu/chimerax/docs/user/commands/save.html
-save "I:\Bearson\David_Bradshaw\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_4b_TLR5_Homodimer_Any_Loc_Refined_Balanced_ClusPro_Model_6_V2.tif" width 2100 height 1200 transparentBackground true
-#Target Size = Height x Width = 2" x 3.5"
-#2 x 2 x 300 dpi = 1200 pixels height
-#3.5 x 2 x 300 dpi = 2100 pixels width
-
-#Save ChimeraX Session
-save "I:\Bearson\David_Bradshaw\Manuscripts\UK1_Reverse_Vaccinology\Figures\Figure_4b_TLR5_Homodimer_Any_Loc_Refined_Balanced_ClusPro_Model_6_V2.cxs"
-
+###GIMP
 ##Adjust DPI of an image
 #https://guides.lib.umich.edu/c.php?g=282942&p=1888164
 #Right-click -> Open with -> GIMP or similar software
