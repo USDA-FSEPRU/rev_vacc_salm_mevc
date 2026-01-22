@@ -1,6 +1,6 @@
 # *In silico* development of a cross-protective, multiepitope *Salmonella* vaccine against clinically-relevant and poultry-associated serovars
 
-[Figure 1.tiff](https://github.com/user-attachments/files/24799452/Figure.1.tiff)
+![Workflow](https://github.com/user-attachments/files/24799452/Figure.1.tiff)
 
 
 # Abstract
