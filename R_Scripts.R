@@ -2741,31 +2741,40 @@ PulseNet_All_summ_CheckM_Pass_by_isosrc$X_axis_ggtext_label <-
          "<br> n=", 
          PulseNet_All_summ_CheckM_Pass_by_isosrc$Pulsnet_Isolate_Counts_commaed)
 
-####Epitope Complete Homology by PulseNet Isolation Source Heatmap - Supplementary Figure 6####
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+####Epitope Complete Homology by PulseNet Isolation Source Heatmap - Supplementary Figure 5####
+epitope_by_isosrc_no_100s_text_BLB2_MSM_SMDB_V4 <-
+  #Create the base heatmap
+  ggplot(PulseNet_proteomes_epitope_homology_isosrc_summary_graphics) +
+  geom_tile(aes(x = Short.Summarized.isolation.source, y = Short_Unique_Id, fill = Complete_Homology), color="black") +
+  scale_fill_gradient2(name = "Complete Homology", low = "firebrick", high = "#177BB5", mid = "purple",
+                       na.value = "white", midpoint = 50, limit = c(0, 100)) +
+  theme(axis.text.x  = element_text(angle=45, hjust=1)) +
+  xlab("Isolation Source") +
+  ylab("Multiepitope Vaccine Construct Epitope") +
+  
+  #Add text with numbers over the heatmaps
+  geom_text(filter(PulseNet_proteomes_epitope_homology_isosrc_summary_graphics, Complete_Homology != 100), 
+            mapping=aes(Short.Summarized.isolation.source, Short_Unique_Id, label = round(Complete_Homology,2)), color = "white", size = 4, fontface = "bold") +
+  
+  #Add a blank heatmap column to the left of the main heatmap
+  new_scale_fill() +
+  geom_tile(data=MEVC_Epitope_Type_Blank, 
+            aes(x=0.45, y=Short_Unique_Id, fill = Epitope_Type, width=0.1)) + 
+  scale_fill_manual(labels = sort(unique(MEVC_Epitope_Type_Blank$Epitope_Type)), 
+                    values = rep("white", length(unique(MEVC_Epitope_Type_Blank$Epitope_Type))),
+                    guide="none") +
+  
+  #Add a heatmap column designating the Epitope Type to left of blank column
+  new_scale_fill() +
+  geom_tile(data=MEVC_Epitope_Type_Colors_ERB, 
+            aes(x=0.25, y=Short_Unique_Id, fill = Epitope_Type, width=0.2), color="black") + 
+  scale_fill_manual("Epitope Type", labels = sort(unique(MEVC_Epitope_Type_Colors_ERB$Epitope_Type)), 
+                    values = unique(arrange(MEVC_Epitope_Type_Colors_ERB, Epitope_Type)$y_epitope_type_colors)) +
+  theme(axis.text=element_text(size=13, color="black", face = "bold"), 
+        axis.title=element_text(size=15, face = "bold"), 
+        legend.text=element_text(size=11, face = "bold"), 
+        legend.key.size = unit(0.7,"cm"), legend.title=element_text(size=13, face = "bold"))
+epitope_by_isosrc_no_100s_text_BLB2_MSM_SMDB_V4
 
 #####Epitope by Outbreak Source Summary#####
 
@@ -2964,4 +2973,5 @@ epitope_by_otbksrc_no_100s_text_BLB2_MSM_SMDB_V4
 ggsave("C:/Users/David.Bradshaw/OneDrive - USDA/Documents/Manuscripts/UK1_Reverse_Vaccinology/Figures/Figure_9_PulseNet_proteome_epitope_homology_by_otbk_src_heatmap V4.tiff",
        epitope_by_otbksrc_no_100s_text_BLB2_MSM_SMDB_V4, 
        device = "tiff", width = 12, height = 8, dpi = 300)
+
 
