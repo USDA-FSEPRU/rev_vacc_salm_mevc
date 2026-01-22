@@ -1,6 +1,7 @@
 # *In silico* development of a cross-protective, multiepitope *Salmonella* vaccine against clinically-relevant and poultry-associated serovars
 
-![Reverse Vaccinology Workflow](https://github.com/user-attachments/assets/7e64b1b8-e64d-4cd3-855b-ab91f7054935)
+[Figure 1.tiff](https://github.com/user-attachments/files/24799452/Figure.1.tiff)
+
 
 # Abstract
 Background: Non-typhoidal *Salmonella enterica* subspecies *enterica* (NTS) is an important source of human foodborne illness, frequently via contaminated food animal products. Vaccination is a promisingly effective intervention to lower NTS loads in food animals, thus reducing food chain transmission. Currently available commercial vaccines have limited cross protection across *Salmonella* serovars (>2,600), indicating a need for improved vaccine design. Multiepitope vaccines designed using reverse vaccinology tools are created with statistically selected, antigenic epitopes and evaluated *in silico*. In the current study, a modified reverse vaccinology pipeline was employed to screen for epitopes in the *Salmonella enterica* serovar Typhimurium strain UK-1 proteome for design of a cross-protective, multiepitope vaccine construct (MEVC) against *Salmonella* for poultry. 
