@@ -1,6 +1,6 @@
 # *In silico* design and evaluation of a candidate multiepitope Salmonella vaccine construct targeting broad-spectrum protection in poultry
 
-![](https://github.com/USDA-FSEPRU/rev_vacc_salm_mevc/blob/main/Workflow.tiff)
+![](Workflow.tiff)
 
 # Abstract
 Background: Salmonella enterica subspecies enterica is an important source of human foodborne illness, frequently via contaminated food animal products. Vaccination is a promisingly effective intervention to lower Salmonella loads in food animals, thus reducing food chain transmission. Currently-available commercial vaccines have limited cross protection across Salmonella serovars (>2,600), indicating a need for novel vaccines with broad efficacy. In this study, an in silico reverse vaccinology pipeline was employed using the proteome of Salmonella enterica serovar Typhimurium strain UK-1 to comprehensively screen for conserved proteins from poultry-associated, human-relevant Salmonella serovars to identify epitopes with predicted broad-spectrum protection for the design of a multiepitope vaccine construct (MEVC). 
